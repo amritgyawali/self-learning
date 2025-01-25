@@ -16,7 +16,7 @@ const AboutUsPage: React.FC = () => {
       <animated.div style={fadeIn}>
         {/* Hero Section */}
         <section className="relative h-[60vh]">
-         <Image src="/images/about-us-hero.jpg" alt="About Us" layout="fill" objectFit="cover" />
+          <Image src="/images/about-us-hero.jpg" alt="About Us" layout="fill" objectFit="cover" />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <h1 className="text-5xl md:text-7xl font-bold text-white">About Us</h1>
           </div>
@@ -27,7 +27,7 @@ const AboutUsPage: React.FC = () => {
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/2 mb-8 md:mb-0">
-               <Image src="/images/founders-image.jpg" alt="Founders" width={500} height={500} className="rounded-lg" />
+                <Image src="/images/founders-image.jpg" alt="Founders" width={500} height={500} className="rounded-lg" />
               </div>
               <div className="md:w-1/2 md:pl-12">
                 <h2 className="text-4xl font-script mb-4">Our Journey</h2>
@@ -75,10 +75,39 @@ const AboutUsPage: React.FC = () => {
             </div>
           </div>
         </section>
+
+        {/* Photography Section */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold text-center mb-12">Our Photography</h2>
+            <div className="flex flex-col md:flex-row items-center">
+              <div className="md:w-1/2 mb-8 md:mb-0">
+                <Image src="/images/photography.jpg" alt="Photography" width={500} height={500} className="rounded-lg" />
+              </div>
+              <div className="md:w-1/2 md:pl-12">
+                <p className="mb-6">
+                  Photography is more than just a job for us; it's a passion. We believe that every photograph tells a story,
+                  and we strive to capture the emotions, the joy, and the love that make each wedding unique. Our approach
+                  is a blend of traditional and contemporary styles, ensuring that we capture both the classic moments and
+                  the candid, spontaneous ones.
+                </p>
+                <p className="mb-6">
+                  Our team of experienced photographers uses the latest equipment and techniques to create stunning images
+                  that you will cherish for a lifetime. We take the time to get to know our clients, understanding their vision
+                  and preferences, so that we can deliver a personalized experience that exceeds their expectations.
+                </p>
+                <p>
+                  Whether it's the first look, the exchange of vows, or the joyous celebration with family and friends, we are
+                  there to capture every moment. Our goal is to create a visual narrative that reflects the beauty and emotion
+                  of your special day.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       </animated.div>
     </Layout>
   );
 };
 
 export default AboutUsPage;
-

@@ -79,7 +79,7 @@ export default function LiveWeddingsPage() {
                     Add Your Wedding
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className='bg-white'>
                   <DialogHeader>
                     <DialogTitle>Add New Wedding</DialogTitle>
                   </DialogHeader>
