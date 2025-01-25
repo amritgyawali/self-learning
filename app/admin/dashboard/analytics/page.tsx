@@ -16,7 +16,13 @@ import {
 } from 'recharts'
 
 export default function AnalyticsPage() {
-  const [analyticsData, setAnalyticsData] = useState([])
+  interface AnalyticsData {
+    date: string;
+    visitors: number;
+    pageViews: number;
+  }
+
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
