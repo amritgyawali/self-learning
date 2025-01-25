@@ -32,7 +32,7 @@ export default function AnalyticsPage() {
   const fetchAnalyticsData = async () => {
     setIsLoading(true)
     try {
-      const fetchedData = await mockBackend.getAnalyticsData()
+      const fetchedData: AnalyticsData[] = await mockBackend.getAnalyticsData()
       setAnalyticsData(fetchedData)
     } catch (error) {
       console.error('Failed to fetch analytics data:', error)
@@ -114,4 +114,3 @@ export default function AnalyticsPage() {
     </div>
   )
 }
-
