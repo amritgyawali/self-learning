@@ -1,6 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Trash2 } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { mockBackend } from '@/lib/mockBackend'
+import { motion } from 'framer-motion'
 
 type Comment = {
   id: number
@@ -8,12 +13,6 @@ type Comment = {
   content: string
   createdAt: string
 }
-  const [comments, setComments] = useState<Comment[]>([])
-import { Trash2 } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { mockBackend } from '@/lib/mockBackend'
-import { motion } from 'framer-motion'
 
 export default function CommentsPage() {
   const [comments, setComments] = useState<Comment[]>([])
@@ -83,5 +82,3 @@ export default function CommentsPage() {
     </div>
   )
 }
-//
-

@@ -9,13 +9,27 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 
+type Settings = {
+  siteName: string;
+  siteDescription: string;
+  contactEmail: string;
+  contactPhone: string;
+  address: string;
+  enableComments: boolean;
+  enableBooking: boolean;
+  teamEmails: string;
+  teamPhoneNumbers: string;
+  enableEmailNotifications: boolean;
+  enableSMSNotifications: boolean;
+};
+
 export default function SettingsPage() {
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<Settings>({
     siteName: 'Wedding Photography',
     siteDescription: 'Capture your special moments with our professional wedding photography services.',
     contactEmail: 'info@weddingphotography.com',
     contactPhone: '+1 (123) 456-7890',
-    address: '123 Wedding St, Photo City, PC 12345',
+    address: '123 Wedding St, Bridal City, Country',
     enableComments: true,
     enableBooking: true,
     teamEmails: '',
@@ -24,16 +38,16 @@ export default function SettingsPage() {
     enableSMSNotifications: false,
   })
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setSettings(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSwitchChange = (name) => {
-    setSettings(prev => ({ ...prev, [name]: !prev[name] }))
+  const handleSwitchChange = (name: string) => {
+    setSettings(prev => ({ ...prev, [name]: !(prev[name as keyof Settings] as boolean) }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Here you would typically send the settings to your backend
     console.log('Settings saved:', settings)
@@ -204,4 +218,3 @@ export default function SettingsPage() {
     </div>
   )
 }
-
