@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Package } from '@/types'
+import { fdatasync } from 'fs'
 
 const additionalServices = [
   { id: 1, name: "Drone Photography", price: 5000, description: "Aerial shots of your venue and ceremony" },
@@ -69,5 +70,6 @@ const CustomizePackage: React.FC<CustomizePackageProps> = ({ onCustomPackageSele
     </motion.div>
   )
 }
+//
 
 export default CustomizePackage
