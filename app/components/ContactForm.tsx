@@ -166,16 +166,17 @@ const ContactForm = () => {
       </div>
 
       {/* WhatsApp Button */}
-      <a
-        href="https://wa.me/your-number"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 left-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300 z-50"
-      >
-        <FaWhatsapp className="text-2xl" />
-      </a>
-    </section>
-  );
+<a
+  href="https://wa.me/+9779867335830"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="fixed bottom-6 left-6 bg-green-500 text-white p-6 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300 z-50"
+>
+  <FaWhatsapp className="text-2xl" />
+  <span className="ml-2">WhatsApp Us</span>
+</a>
+</section>
+);
 };
 
 export default ContactForm;
