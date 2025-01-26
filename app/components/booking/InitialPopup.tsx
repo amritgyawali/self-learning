@@ -18,7 +18,12 @@ const schema = z.object({
   weddingDate: z.date().min(new Date(), { message: "Wedding date must be in the future" }),
 })
 
-export default function InitialPopup({ isOpen, onSubmit }) {
+interface InitialPopupProps {
+  isOpen: boolean;
+  onSubmit: (data: any) => void;
+}
+
+export default function InitialPopup({ isOpen, onSubmit }: InitialPopupProps) {
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -28,7 +33,7 @@ export default function InitialPopup({ isOpen, onSubmit }) {
     },
   })
 
-  const onSubmitForm = (data) => {
+  const onSubmitForm = (data: any) => {
     onSubmit(data)
   }
 

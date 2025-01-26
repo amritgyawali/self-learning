@@ -172,7 +172,7 @@ const ContactPage = () => {
                     <div key={service.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={service.id}
-                        checked={formData.services[service.id]}
+                        checked={formData.services[service.id as keyof typeof formData.services]}
                         onCheckedChange={(checked) => 
                           setFormData({ 
                             ...formData, 

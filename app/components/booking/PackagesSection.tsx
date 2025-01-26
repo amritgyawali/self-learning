@@ -1,12 +1,15 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { Button } from "@/components/ui/button";
+import { Package } from '@/types'; // Update with the actual path
 
-const packages = [
+interface PackagesSectionProps {
+  onPackageSelect: (pkg: Package) => void;
+}
+
+const packages: Package[] = [
   {
     id: 1,
     name: "Classic Package",
@@ -17,7 +20,7 @@ const packages = [
       "1 Photographer",
       "Online Gallery",
       "100 Edited Digital Images",
-    ]
+    ],
   },
   {
     id: 2,
@@ -30,71 +33,12 @@ const packages = [
       "Online Gallery",
       "200 Edited Digital Images",
       "Engagement Shoot",
-    ]
+    ],
   },
-  {
-    id: 3,
-    name: "Luxury Package",
-    price: 79999,
-    image: "/luxury-package.jpg",
-    services: [
-      "Full Day Coverage",
-      "2 Photographers",
-      "Online Gallery",
-      "All Edited Digital Images",
-      "Engagement Shoot",
-      "Wedding Album",
-    ]
-  },
-  {
-    id: 4,
-    name: "Destination Package",
-    price: 99999,
-    image: "/destination-package.jpg",
-    services: [
-      "2 Days of Coverage",
-      "2 Photographers",
-      "Online Gallery",
-      "All Edited Digital Images",
-      "Engagement Shoot",
-      "Wedding Album",
-      "Travel Included",
-    ]
-  },
-  {
-    id: 5,
-    name: "Ultimate Package",
-    price: 149999,
-    image: "/ultimate-package.jpg",
-    services: [
-      "3 Days of Coverage",
-      "3 Photographers",
-      "Online Gallery",
-      "All Edited Digital Images",
-      "Engagement Shoot",
-      "Wedding Album",
-      "Video Highlights",
-      "Drone Coverage",
-    ]
-  },
-]
+  // Add other packages similarly...
+];
 
-export default function PackagesSection({ onPackageSelect }) {
-  //const [selectedPackage, setSelectedPackage] = useState(null) //Removed as not used
-
-  //const handleViewDetails = (pkg) => { //Removed as not used
-  //  setSelectedPackage(pkg)
-  //}
-
-  //const handleCloseDialog = () => { //Removed as not used
-  //  setSelectedPackage(null)
-  //}
-
-  //const handleBookPackage = () => { //Removed as not used
-  //  onPackageSelect(selectedPackage)
-  //  setSelectedPackage(null)
-  //}
-
+export default function PackagesSection({ onPackageSelect }: PackagesSectionProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -110,12 +54,12 @@ export default function PackagesSection({ onPackageSelect }) {
             whileHover={{ scale: 1.05 }}
             className="bg-white rounded-lg shadow-md overflow-hidden"
           >
-            <Image src={pkg.image} alt={pkg.name} width={400} height={300} className="w-full h-48 object-cover" />
+            <Image src={pkg.image!} alt={pkg.name} width={400} height={300} className="w-full h-48 object-cover" />
             <div className="p-4">
               <h3 className="text-xl font-semibold mb-2">{pkg.name}</h3>
               <p className="text-gray-600 mb-4">₹{pkg.price.toLocaleString()}</p>
               <ul className="list-disc pl-5 mb-4">
-                {pkg.services.map((service, index) => (
+                {(pkg.services as string[]).map((service, index) => (
                   <li key={index} className="text-sm text-gray-600">{service}</li>
                 ))}
               </ul>
@@ -124,8 +68,6 @@ export default function PackagesSection({ onPackageSelect }) {
           </motion.div>
         ))}
       </div>
-      {/*Removed Dialog component as it's no longer needed*/}
     </motion.div>
-  )
+  );
 }
-

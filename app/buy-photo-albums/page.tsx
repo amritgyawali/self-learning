@@ -33,16 +33,45 @@ const products = [
 const BuyPhotoAlbumsPage = () => {
   const [filteredProducts, setFilteredProducts] = useState(products)
   const [priceRange, setPriceRange] = useState([0, 3000])
-  const [selectedCategories, setSelectedCategories] = useState([])
-  const [selectedColors, setSelectedColors] = useState([])
-  const [selectedMaterials, setSelectedMaterials] = useState([])
-  const [selectedSizes, setSelectedSizes] = useState([])
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedColors, setSelectedColors] = useState<string[]>([])
+  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([])
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [cartItems, setCartItems] = useState([])
+  interface CartItem {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    category: string;
+    rating: number;
+    reviewCount: number;
+    color: string;
+    material: string;
+    size: string;
+    description: string;
+    quantity: number;
+  }
+  
+  const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [sortOption, setSortOption] = useState('')
-  const [wishlist, setWishlist] = useState([])
-  const [quickViewProduct, setQuickViewProduct] = useState(null)
+  const [wishlist, setWishlist] = useState<number[]>([])
+  interface Product {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    category: string;
+    rating: number;
+    reviewCount: number;
+    color: string;
+    material: string;
+    size: string;
+    description: string;
+  }
+  
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null)
 
   useEffect(() => {
     filterProducts()
@@ -76,21 +105,21 @@ const BuyPhotoAlbumsPage = () => {
     setFilteredProducts(filtered)
   }
 
-  const addToCart = (product) => {
+  const addToCart = (product: any) => {
     setCartItems([...cartItems, { ...product, quantity: 1 }])
   }
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = (productId: number) => {
     setCartItems(cartItems.filter(item => item.id !== productId))
   }
 
-  const updateQuantity = (productId, newQuantity) => {
+  const updateQuantity = (productId: number, newQuantity: any) => {
     setCartItems(cartItems.map(item => 
       item.id === productId ? { ...item, quantity: newQuantity } : item
     ))
   }
 
-  const toggleWishlist = (productId) => {
+  const toggleWishlist = (productId: number) => {
     if (wishlist.includes(productId)) {
       setWishlist(wishlist.filter(id => id !== productId))
     } else {
@@ -113,7 +142,12 @@ const BuyPhotoAlbumsPage = () => {
             <h1 className="text-4xl md:text-6xl font-serif mb-4 text-center">Preserve Your Precious Memories with Elegance</h1>
             <p className="text-xl mb-6">Explore Our Premium Albums, Frames, and Prints</p>
             <Button 
-              onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => {
+                const productsSection = document.getElementById('products');
+                if (productsSection) {
+                  productsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
               className="bg-[#f5d3d6] text-[#2c2c2c] hover:bg-[#e6b8bc] transition-all duration-300 transform hover:scale-105"
             >
               Shop Now

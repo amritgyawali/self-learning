@@ -4,7 +4,24 @@ import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Heart, Star, Eye } from 'lucide-react'
 
-const ProductCard = ({ product, onAddToCart, onToggleWishlist, isWishlisted, onQuickView }) => {
+interface Product {
+  id: number;
+  name: string;
+  image: string;
+  rating: number;
+  reviewCount: number;
+  price: number;
+}
+
+interface ProductCardProps {
+  product: Product;
+  onAddToCart: (product: Product) => void;
+  onToggleWishlist: (id: number) => void;
+  isWishlisted: boolean;
+  onQuickView: (product: Product) => void;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onToggleWishlist, isWishlisted, onQuickView }) => {
   return (
     <motion.div
       className="bg-white rounded-lg shadow-md overflow-hidden"

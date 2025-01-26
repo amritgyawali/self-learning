@@ -9,8 +9,16 @@ import { Dialog, DialogContent } from "@/components/ui/dialog"
 import PasswordPrompt from '../components/PasswordPrompt';
 
 const PortfolioPage: React.FC = () => {
-  const [portfolioItems, setPortfolioItems] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
+  interface PortfolioItem {
+    id: number;
+    type: string;
+    src: string;
+    title: string;
+    url: string;
+  }
+  
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [selectedImage, setSelectedImage] = useState<PortfolioItem | null>(null);
   const [isPasswordPromptOpen, setIsPasswordPromptOpen] = useState(false);
   const [selectedItemUrl, setSelectedItemUrl] = useState('');
   const router = useRouter();
@@ -27,7 +35,7 @@ const PortfolioPage: React.FC = () => {
     setPortfolioItems(mockData);
   }, []);
 
-  const handleItemClick = (item) => {
+  const handleItemClick = (item: PortfolioItem) => {
     if (item.type === 'image') {
       setSelectedImage(item);
     } else {

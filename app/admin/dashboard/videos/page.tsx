@@ -6,7 +6,7 @@ import { Trash2, Edit, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { mockBackend } from '@/lib/mockBackend'
+import { mockBackend, Video } from '@/lib/mockBackend'
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import {
 import { Label } from "@/components/ui/label"
 
 export default function VideosPage() {
-  const [videos, setVideos] = useState([])
+  const [videos, setVideos] = useState<Video[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [newVideo, setNewVideo] = useState({ title: '', url: '', thumbnail: '' })
 
@@ -46,7 +46,7 @@ export default function VideosPage() {
     }
   }
 
-  const handleDeleteVideo = async (id) => {
+  const handleDeleteVideo = async (id: number) => {
     try {
       await mockBackend.deleteVideo(id)
       fetchVideos()

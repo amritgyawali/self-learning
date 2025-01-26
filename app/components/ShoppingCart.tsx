@@ -3,7 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-const ShoppingCart = ({ isOpen, onClose, items, onRemove, onUpdateQuantity }) => {
+interface ShoppingCartProps {
+  isOpen: boolean;
+  onClose: () => void;
+  items: { id: number; name: string; price: number; quantity: number }[];
+  onRemove: (id: number) => void;
+  onUpdateQuantity: (id: number, quantity: number) => void;
+}
+
+const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose, items, onRemove, onUpdateQuantity }) => {
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
   return (

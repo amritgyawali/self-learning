@@ -20,12 +20,20 @@ import Layout from '../components/Layout'
 import Image from 'next/image'
 import styles from '../styles/layout.module.css';
 
+type Wedding = {
+  id: string;
+  title: string;
+  createdBy: string;
+  photos: { url: string }[];
+  videos: { url: string }[];
+};
+
 export default function LiveWeddingsPage() {
-  const [weddings, setWeddings] = useState([])
+  const [weddings, setWeddings] = useState<Wedding[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [newWeddingTitle, setNewWeddingTitle] = useState('')
   const [isNameDialogOpen, setIsNameDialogOpen] = useState(false)
-  const [featuredWedding, setFeaturedWedding] = useState(null)
+  const [featuredWedding, setFeaturedWedding] = useState<Wedding | null>(null)
 
   useEffect(() => {
     fetchWeddings()

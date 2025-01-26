@@ -9,11 +9,19 @@ import { Card, CardContent } from "@/components/ui/card"
 import { mockLiveWeddingsBackend } from '@/lib/mockLiveWeddingsBackend'
 import Image from 'next/image'
 import Layout from '../../components/Layout'
+
+interface Wedding {
+  id: string
+  title: string
+  createdBy: string
+  photos: { id: string, url: string, uploadedBy: string, uploadedAt: string }[]
+  videos: { id: string, url: string, uploadedBy: string, uploadedAt: string }[]
+}
 import { UploadDialog } from '@/components/UploadDialog'
 
 export default function WeddingPage() {
   const params = useParams()
-  const [wedding, setWedding] = useState(null)
+  const [wedding, setWedding] = useState<Wedding | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
   const [uploadType, setUploadType] = useState<'photo' | 'video' | null>(null)
@@ -25,8 +33,12 @@ export default function WeddingPage() {
   const fetchWedding = async () => {
     setIsLoading(true)
     try {
-      const fetchedWedding = await mockLiveWeddingsBackend.getWedding(params.id)
-      setWedding(fetchedWedding)
+      const fetchedWedding = await mockLiveWeddingsBackend.getWedding(params.id as string)
+      if (fetchedWedding) {
+        setWedding(fetchedWedding)
+      } else {
+        console.error('Fetched wedding is undefined')
+      }
     } catch (error) {
       console.error('Failed to fetch wedding:', error)
     }
@@ -43,13 +55,13 @@ export default function WeddingPage() {
     reader.onloadend = async () => {
       try {
         if (uploadType === 'photo') {
-          await mockLiveWeddingsBackend.addPhoto(params.id, {
+          await mockLiveWeddingsBackend.addPhoto(params.id as string, {
             url: reader.result as string,
             uploadedBy: name,
             uploadedAt: new Date().toISOString(),
           })
         } else {
-          await mockLiveWeddingsBackend.addVideo(params.id, {
+          await mockLiveWeddingsBackend.addVideo(params.id as string, {
             url: reader.result as string,
             uploadedBy: name,
             uploadedAt: new Date().toISOString(),
