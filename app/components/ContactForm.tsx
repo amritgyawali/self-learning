@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { FaWhatsapp } from 'react-icons/fa';
 
 const ContactForm = () => {
@@ -25,7 +25,6 @@ const ContactForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
     console.log('Form submitted:', formData);
   };
 
@@ -94,10 +93,10 @@ const ContactForm = () => {
                   <Checkbox
                     id="wedding"
                     checked={formData.services.wedding}
-                    onCheckedChange={(checked) => 
-                      setFormData({ 
-                        ...formData, 
-                        services: { ...formData.services, wedding: checked as boolean } 
+                    onCheckedChange={(checked) =>
+                      setFormData({
+                        ...formData,
+                        services: { ...formData.services, wedding: checked as boolean }
                       })
                     }
                   />
@@ -107,10 +106,10 @@ const ContactForm = () => {
                   <Checkbox
                     id="cinematography"
                     checked={formData.services.cinematography}
-                    onCheckedChange={(checked) => 
-                      setFormData({ 
-                        ...formData, 
-                        services: { ...formData.services, cinematography: checked as boolean } 
+                    onCheckedChange={(checked) =>
+                      setFormData({
+                        ...formData,
+                        services: { ...formData.services, cinematography: checked as boolean }
                       })
                     }
                   />
@@ -120,10 +119,10 @@ const ContactForm = () => {
                   <Checkbox
                     id="preWedding"
                     checked={formData.services.preWedding}
-                    onCheckedChange={(checked) => 
-                      setFormData({ 
-                        ...formData, 
-                        services: { ...formData.services, preWedding: checked as boolean } 
+                    onCheckedChange={(checked) =>
+                      setFormData({
+                        ...formData,
+                        services: { ...formData.services, preWedding: checked as boolean }
                       })
                     }
                   />
@@ -133,10 +132,10 @@ const ContactForm = () => {
                   <Checkbox
                     id="photoBooks"
                     checked={formData.services.photoBooks}
-                    onCheckedChange={(checked) => 
-                      setFormData({ 
-                        ...formData, 
-                        services: { ...formData.services, photoBooks: checked as boolean } 
+                    onCheckedChange={(checked) =>
+                      setFormData({
+                        ...formData,
+                        services: { ...formData.services, photoBooks: checked as boolean }
                       })
                     }
                   />
@@ -165,16 +164,24 @@ const ContactForm = () => {
         </div>
       </div>
 
-      {/* WhatsApp Button */}
-<a
+{/* WhatsApp Button */}
+<motion.a
   href="https://wa.me/+9779867335830"
   target="_blank"
   rel="noopener noreferrer"
-  className="fixed bottom-6 left-6 bg-green-500 text-white p-6 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300 z-50"
+  className="fixed bottom-6 left-6 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300 z-50 flex items-center"
+  animate={{ scale: [1, 1.1, 1], opacity: [1, 0.8, 1] }}
+  transition={{ repeat: Infinity, duration: 1.5 }}
 >
-  <FaWhatsapp className="text-2xl" />
-  <span className="ml-2">WhatsApp Us</span>
-</a>
+  <FaWhatsapp className="text-3xl" />
+  <motion.span
+    className="ml-2 text-sm"
+    animate={{ opacity: [1, 0.8, 1] }}
+    transition={{ repeat: Infinity, duration: 1.5 }}
+  >
+    WhatsApp Us
+  </motion.span>
+</motion.a>
 </section>
 );
 };
