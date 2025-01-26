@@ -20,19 +20,18 @@ interface CustomizePackageProps {
 }
 
 const CustomizePackage: React.FC<CustomizePackageProps> = ({ onCustomPackageSelect }) => {
-  const [selectedServices, setSelectedServices] = useState<Package['services']>([])
+  const [selectedServices, setSelectedServices] = useState<{ id: number; name: string; price: number; description?: string }[]>([])
   const [totalPrice, setTotalPrice] = useState(0)
 
   const handleServiceToggle = (service: { id: number; name: string; price: number; description?: string }) => {
-    setSelectedServices((prev) => {
-      const newServices = prev?.some((s) => typeof s !== 'string' && s.id === service.id)
-        ? prev.filter((s): s is { id: number; name: string; price: number; description?: string } => typeof s !== 'string' && s.id !== service.id)
-        : [...(prev || []), service]
-  
-      const newTotal = newServices.reduce((sum, s) => sum + (typeof s !== 'string' ? s.price : 0), 0)
-      setTotalPrice(newTotal)
-      return newServices as Package['services']
-    })
+    const isSelected = selectedServices.some(s => s.id === service.id)
+    const newServices = isSelected
+      ? selectedServices.filter(s => s.id !== service.id)
+      : [...selectedServices, service]
+
+    const newTotal = newServices.reduce((sum, s) => sum + s.price, 0)
+    setSelectedServices(newServices)
+    setTotalPrice(newTotal)
   }
 
   const handleSubmit = () => {
@@ -52,7 +51,7 @@ const CustomizePackage: React.FC<CustomizePackageProps> = ({ onCustomPackageSele
           <div key={service.id} className="flex items-center space-x-2">
             <Checkbox
               id={`service-${service.id}`}
-              checked={selectedServices?.some((s: any) => s.id === service.id)}
+              checked={selectedServices.some(s => s.id === service.id)}
               onCheckedChange={() => handleServiceToggle(service)}
             />
             <Label htmlFor={`service-${service.id}`} className="flex-grow">
