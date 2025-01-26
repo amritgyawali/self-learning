@@ -8,13 +8,11 @@ import { LayoutDashboard, ImageIcon, FileVideo, Settings, Users, MessageSquare, 
 import { Button } from "@/components/ui/button"
 import {
   Sidebar,
-  SidebarContent,
+  SidebarContext,
   SidebarHeader,
   SidebarFooter,
-  SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
-  SidebarProvider
+  SidebarProvider,
 } from "@/components/ui/sidebar"
 
 export default function DashboardLayout({
@@ -50,33 +48,7 @@ export default function DashboardLayout({
               </Link>
             </SidebarHeader>
 
-            <SidebarContent>
-              <SidebarMenu>
-                {menuItems.map((item) => (
-                  <SidebarMenuItem key={item.label}>
-                    <SidebarMenuButton asChild>
-                      <Link href={item.href} className="flex items-center space-x-2">
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarContent>
-
-            <SidebarFooter className="p-4">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={toggleTheme}
-                className="w-full"
-              >
-                {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </Button>
-            </SidebarFooter>
           </Sidebar>
-
           <div className="flex-1 flex flex-col overflow-hidden">
             <header className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow">
               <h1 className="text-2xl font-semibold">Dashboard</h1>
@@ -94,7 +66,6 @@ export default function DashboardLayout({
               </div>
             </main>
           </div>
-        {/* </div> */}
       </SidebarProvider>
     </div>
   )
