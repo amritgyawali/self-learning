@@ -1,14 +1,22 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+
+type Comment = {
+  id: number
+  user: string
+  content: string
+  createdAt: string
+}
+  const [comments, setComments] = useState<Comment[]>([])
 import { Trash2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { mockBackend } from '@/lib/mockBackend'
+import { motion } from 'framer-motion'
 
 export default function CommentsPage() {
-  const [comments, setComments] = useState([])
+  const [comments, setComments] = useState<Comment[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -26,7 +34,7 @@ export default function CommentsPage() {
     setIsLoading(false)
   }
 
-  const handleDeleteComment = async (id) => {
+  const handleDeleteComment = async (id: number) => {
     try {
       await mockBackend.deleteComment(id)
       fetchComments()
