@@ -93,13 +93,13 @@ const HomePage: React.FC = () => {
     className="h-full"
   >
     {[
-      '/images/hero-image.jpg',
-      '/images/hero-2.jpg',
-      '/images/hero-image.jpg',
-      '/images/hero-image.jpg',
-      '/images/hero-5.jpg',
-      '/images/hero-image.jpg',
-      '/images/hero-7.jpg',
+      '/images/hero-image-1.jpg',
+      '/images/hero-image-2.jpg',
+      '/images/hero-image-3.jpg',
+      '/images/hero-image-4.jpg',
+      '/images/hero-image-5',
+      '/images/hero-image-6.jpg',
+      '/images/hero-image-7.jpg',
     ].map((image, index) => (
       <div key={index} className="relative h-screen">
         <Image
