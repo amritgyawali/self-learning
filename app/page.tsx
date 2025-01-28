@@ -81,78 +81,81 @@ const HomePage: React.FC = () => {
         transition={{ duration: 0.5 }}
       >
         {/* Hero Section */}
-<section className="relative h-screen">
-  <Slider
-    dots={true}
-    infinite={true}
-    speed={1000}
-    slidesToShow={1}
-    slidesToScroll={1}
-    autoplay={true}
-    autoplaySpeed={4000}
-    className="h-full"
-  >
-    {[
-      '/images/hero-image-1.jpg',
+        <section className="relative h-screen">
+          {/* Fixed content overlay */}
+          <div className="absolute inset-0 z-10 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white px-4">
+            <motion.h1
+              className="text-4xl md:text-6xl font-bold mb-4 text-center"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+            >
+              Capture Your Special Moments
+            </motion.h1>
+            <motion.p
+              className="text-xl mb-8 text-center"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            >
+              Professional Wedding Photography Services
+            </motion.p>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="flex space-x-4"
+            >
+              <Button
+                size="lg"
+                className="bg-white text-black hover:bg-gray-200"
+                onClick={() => router.push('/booking')}
+              >
+                Book Now
+              </Button>
+              <Link href="tel:+9779867335830">
+                <Button
+                  size="lg"
+                  className="bg-green-500 text-white hover:bg-green-600"
+                >
+                  <FaPhone className="mr-2" /> Call Us
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Sliding background images */}
+          <Slider
+            dots={true}
+            infinite={true}
+            speed={1000}
+            slidesToShow={1}
+            slidesToScroll={1}
+            autoplay={true}
+            autoplaySpeed={4000}
+            className="h-full"
+          >
+            {[
+              '/images/hero-image-1.jpg',
       '/images/hero-image-2.jpg',
       '/images/hero-image-3.jpg',
       '/images/hero-image-4.jpg',
       '/images/hero-image-5',
       '/images/hero-image-6.jpg',
       '/images/hero-image-7.jpg',
-    ].map((image, index) => (
-      <div key={index} className="relative h-screen">
-        <Image
-          src={image}
-          alt={`Hero Slide ${index + 1}`}
-          layout="fill"
-          objectFit="cover"
-          className="absolute"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white px-4">
-          <motion.h1
-            className="text-4xl md:text-6xl font-bold mb-4 text-center"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            Capture Your Special Moments
-          </motion.h1>
-          <motion.p
-            className="text-xl mb-8 text-center"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-          >
-            Professional Wedding Photography Services
-          </motion.p>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex space-x-4"
-          >
-            <Button
-              size="lg"
-              className="bg-white text-black hover:bg-gray-200"
-              onClick={() => router.push('/booking')}
-            >
-              Book Now
-            </Button>
-            <Link href="tel:+9779867335830">
-              <Button
-                size="lg"
-                className="bg-green-500 text-white hover:bg-green-600"
-              >
-                <FaPhone className="mr-2" /> Call Us
-              </Button>
-            </Link>
-          </motion.div>
-        </div>
-      </div>
-    ))}
-  </Slider>
-</section>
+            ].map((image, index) => (
+              <div key={index} className="relative h-screen">
+                <Image
+                  src={image}
+                  alt={`Hero Slide ${index + 1}`}
+                  layout="fill"
+                  objectFit="cover"
+                  className="absolute"
+                />
+              </div>
+            ))}
+          </Slider>
+        </section>
 
         {/* Featured Section */}
         <section className="py-20">
