@@ -23,17 +23,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  role: 'viewer' | 'admin' | 'editor';
-}
-
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>([])
+  const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [newUser, setNewUser] = useState<Omit<User, 'id'>>({ name: '', email: '', role: 'viewer' })
+  const [newUser, setNewUser] = useState({ name: '', email: '', role: 'viewer' })
 
   useEffect(() => {
     fetchUsers()
@@ -60,7 +53,7 @@ export default function UsersPage() {
     }
   }
 
-  const handleDeleteUser = async (id: number) => {
+  const handleDeleteUser = async (id) => {
     try {
       await mockBackend.deleteUser(id)
       fetchUsers()
@@ -117,7 +110,7 @@ export default function UsersPage() {
                   Role
                 </Label>
                 <Select
-                  onValueChange={(value) => setNewUser({ ...newUser, role: value as 'viewer' | 'admin' | 'editor' })}
+                  onValueChange={(value) => setNewUser({ ...newUser, role: value })}
                   defaultValue={newUser.role}
                 >
                   <SelectTrigger className="col-span-3">
