@@ -32,9 +32,13 @@ export default function BookingPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className={`container mx-auto px-4 py-8 ${styles['main-content']}`}
+        className={`container mx-auto px-4 py-8 ${styles['main-content']} bg-white min-h-screen mt-20`}
+        style={{ 
+          backgroundColor: 'white',
+          paddingTop: '80px' // Add extra padding to account for the fixed navbar
+        }}
       >
-        <h1 className="text-4xl font-bold text-center mb-8">Book Your Wedding Photography</h1>
+        <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">Book Your Wedding Photography</h1>
         
         <InitialPopup isOpen={!userDetails} onSubmit={handleInitialSubmit} />
 
