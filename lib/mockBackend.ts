@@ -7,7 +7,7 @@ export interface Video {
   thumbnail: string;
 }
 
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
@@ -52,50 +52,85 @@ let analyticsData: AnalyticsData[] = [
 
 export const mockBackend = {
   // Videos
-  getVideos: () => Promise.resolve(videos),
-  addVideo: (video: Omit<Video, 'id'>) => {
+  getVideos: (): Promise<Video[]> => Promise.resolve([...videos]),
+  addVideo: (video: Omit<Video, 'id'>): Promise<Video> => {
     const newVideo = { ...video, id: videos.length + 1 };
     videos.push(newVideo);
     return Promise.resolve(newVideo);
   },
-  updateVideo: (id: number, video: Partial<Video>) => {
-    videos = videos.map(v => v.id === id ? { ...v, ...video } : v);
-    return Promise.resolve(videos.find(v => v.id === id));
+  updateVideo: (id: number, video: Partial<Video>): Promise<Video | undefined> => {
+    const index = videos.findIndex(v => v.id === id);
+    if (index !== -1) {
+      videos[index] = { ...videos[index], ...video };
+      return Promise.resolve(videos[index]);
+    }
+    return Promise.resolve(undefined);
   },
-  deleteVideo: (id: number) => {
+  deleteVideo: (id: number): Promise<void> => {
+    const initialLength = videos.length;
     videos = videos.filter(v => v.id !== id);
+    if (videos.length === initialLength) {
+      return Promise.reject(new Error('Video not found'));
+    }
     return Promise.resolve();
   },
 
   // Users
-  getUsers: () => Promise.resolve(users),
-  addUser: (user: Omit<User, 'id'>) => {
-    const newUser = { ...user, id: users.length + 1 };
+  getUsers: (): Promise<User[]> => Promise.resolve([...users]),
+  addUser: (user: Omit<User, 'id'>): Promise<User> => {
+    const existingUser = users.find(u => u.email === user.email);
+    if (existingUser) {
+      return Promise.reject(new Error('User with this email already exists'));
+    }
+    const newUser = { ...user, id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1 };
     users.push(newUser);
     return Promise.resolve(newUser);
   },
-  updateUser: (id: number, user: Partial<User>) => {
-    users = users.map(u => u.id === id ? { ...u, ...user } : u);
-    return Promise.resolve(users.find(u => u.id === id));
+  updateUser: (id: number, user: Partial<User>): Promise<User | undefined> => {
+    const index = users.findIndex(u => u.id === id);
+    if (index !== -1) {
+      // Check if email is unique when updating
+      if (user.email) {
+        const emailExists = users.some(u => u.email === user.email && u.id !== id);
+        if (emailExists) {
+          return Promise.reject(new Error('Email already in use'));
+        }
+      }
+      
+      users[index] = { ...users[index], ...user };
+      return Promise.resolve(users[index]);
+    }
+    return Promise.resolve(undefined);
   },
-  deleteUser: (id: number) => {
+  deleteUser: (id: number): Promise<void> => {
+    const initialLength = users.length;
     users = users.filter(u => u.id !== id);
+    if (users.length === initialLength) {
+      return Promise.reject(new Error('User not found'));
+    }
     return Promise.resolve();
   },
 
   // Comments
-  getComments: () => Promise.resolve(comments),
-  addComment: (comment: Omit<Comment, 'id' | 'createdAt'>) => {
-    const newComment = { ...comment, id: comments.length + 1, createdAt: new Date().toISOString() };
+  getComments: (): Promise<Comment[]> => Promise.resolve([...comments]),
+  addComment: (comment: Omit<Comment, 'id' | 'createdAt'>): Promise<Comment> => {
+    const newComment = { 
+      ...comment, 
+      id: comments.length > 0 ? Math.max(...comments.map(c => c.id)) + 1 : 1, 
+      createdAt: new Date().toISOString() 
+    };
     comments.push(newComment);
     return Promise.resolve(newComment);
   },
-  deleteComment: (id: number) => {
+  deleteComment: (id: number): Promise<void> => {
+    const initialLength = comments.length;
     comments = comments.filter(c => c.id !== id);
+    if (comments.length === initialLength) {
+      return Promise.reject(new Error('Comment not found'));
+    }
     return Promise.resolve();
   },
 
   // Analytics
-  getAnalyticsData: () => Promise.resolve(analyticsData),
+  getAnalyticsData: (): Promise<AnalyticsData[]> => Promise.resolve([...analyticsData]),
 };
-

@@ -114,12 +114,16 @@ const recentActivity = [
 
 export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false)
-  const [currentTime, setCurrentTime] = useState(new Date())
+  const [currentTime, setCurrentTime] = useState<string | null>(null)
 
-  // Update time every minute
+  // Ensure time is only set on client side
   useEffect(() => {
+    // Set initial time
+    setCurrentTime(new Date().toLocaleTimeString())
+    
+    // Update time every minute
     const timer = setInterval(() => {
-      setCurrentTime(new Date())
+      setCurrentTime(new Date().toLocaleTimeString())
     }, 60000)
 
     return () => clearInterval(timer)
@@ -139,7 +143,8 @@ export default function DashboardPage() {
         <div>
           <h2 className="text-3xl font-bold">Dashboard Overview</h2>
           <p className="text-muted-foreground">
-            Last updated: {currentTime.toLocaleTimeString()}
+            {/* Only render time if it's set on client side */}
+            {currentTime ? `Last updated: ${currentTime}` : 'Loading...'}
           </p>
         </div>
         <Button
