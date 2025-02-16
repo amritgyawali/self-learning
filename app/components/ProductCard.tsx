@@ -14,6 +14,7 @@ interface Product {
 }
 
 interface ProductCardProps {
+  isInCart: boolean;
   product: Product;
   onAddToCart: (product: Product) => void;
   onToggleWishlist: (id: number) => void;
@@ -21,7 +22,7 @@ interface ProductCardProps {
   onQuickView: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onToggleWishlist, isWishlisted, onQuickView }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onToggleWishlist, isWishlisted, onQuickView,isInCart }) => {
   return (
     <motion.div
       className="bg-white rounded-lg shadow-md overflow-hidden"
@@ -44,17 +45,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onToggl
           <span className="ml-1 text-sm text-gray-600">{product.rating} ({product.reviewCount} reviews)</span>
         </div>
         <p className="text-gray-600 mb-4">₹{product.price}</p>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between flex-wrap items-center">
+          {isInCart ? <Button>Added To Cart</Button>:
           <Button 
             onClick={() => onAddToCart(product)}
             className="bg-[#f5d3d6] text-[#2c2c2c] hover:bg-[#e6b8bc]"
           >
             Add to Cart
-          </Button>
+          </Button>}
           <Button
             onClick={() => onQuickView(product)}
             variant="outline"
-            className="ml-2"
+            className=""
           >
             <Eye className="w-4 h-4 mr-2" />
             Quick View

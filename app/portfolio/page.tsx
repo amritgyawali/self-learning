@@ -27,8 +27,8 @@ const PortfolioPage: React.FC = () => {
     // In a real application, you would fetch this data from your backend
     // For this example, we'll use mock data
     const mockData = [
-      { id: 1, type: 'image', src: '/gallery-1.jpg', title: 'Wedding Photo 1', url: '/portfolio/wedding-1' },
-      { id: 2, type: 'image', src: '/gallery-2.jpg', title: 'Wedding Photo 2', url: '/portfolio/wedding-2' },
+      { id: 1, type: 'image', src: '/images/gallery-1.jpg', title: 'Wedding Photo 1', url: '/portfolio/wedding-1' },
+      { id: 2, type: 'image', src: '/images/gallery-2.jpg', title: 'Wedding Photo 2', url: '/portfolio/wedding-2' },
       { id: 3, type: 'video', src: '/wedding-video.mp4', title: 'Wedding Highlights', url: '/portfolio/highlights' },
       // Add more items as needed
     ];

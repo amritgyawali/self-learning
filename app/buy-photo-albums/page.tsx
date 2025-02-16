@@ -268,7 +268,8 @@ const BuyPhotoAlbumsPage = () => {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
-                  <ProductCard 
+                  <ProductCard
+                  isInCart={cartItems.some(item => item.id === product.id)}
                     key={`product-${product.id}`} 
                     product={product} 
                     onAddToCart={addToCart}

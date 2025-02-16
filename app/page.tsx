@@ -16,6 +16,8 @@ import Layout from './components/Layout';
 import { Button } from "@/components/ui/button"
 import ContactForm from './components/ContactForm';
 import { useRouter } from 'next/navigation';
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
+import { DialogTitle } from '@radix-ui/react-dialog';
 
 // function CameraModel(props) {
 //   const mesh = useRef();
@@ -55,19 +57,19 @@ const HomePage: React.FC = () => {
   const testimonials = [
     {
       name: 'John & Jane Doe',
-      image: '/client-1.jpg',
+      image: '/images/gallery-2.jpg',
       rating: 5,
       text: 'Our wedding photos are absolutely stunning! The team captured every moment perfectly.',
     },
     {
       name: 'Mike & Sarah Smith',
-      image: '/client-2.jpg',
+      image: '/images/gallery-1.jpg',
       rating: 5,
       text: 'We couldn\'t be happier with our wedding video. It\'s like reliving the day all over again!',
     },
     {
       name: 'Alex & Emily Johnson',
-      image: '/client-3.jpg',
+      image: '/images/gallery-3.jpg',
       rating: 5,
       text: 'Professional, creative, and a joy to work with. Highly recommend their services!',
     },
@@ -140,7 +142,7 @@ const HomePage: React.FC = () => {
       '/images/hero-image-2.jpg',
       '/images/hero-image-3.jpg',
       '/images/hero-image-4.jpg',
-      '/images/hero-image-5',
+      '/images/hero-image-5.jpg',
       '/images/hero-image-6.jpg',
       '/images/hero-image-7.jpg',
             ].map((image, index) => (
@@ -166,7 +168,7 @@ const HomePage: React.FC = () => {
                 style={{ scale }}
               >
                 <div className="relative overflow-hidden rounded-lg shadow-lg">
-                 <Image src="/images/featured-image.jpg" alt="Featured wedding" width={600} height={400} className="transition-transform duration-300 hover:scale-110" />
+                 <Image src="/images/featured-image.jpg"  alt="Featured wedding" width={1920} height={1080} className="transition-transform duration-300 hover:scale-110 size-full object-cover" />
                 </div>
               </motion.div>
               <div className="md:w-1/2 md:pl-12">
@@ -215,6 +217,8 @@ const HomePage: React.FC = () => {
                 >
                   <Image src={src} alt={`Gallery image ${index + 1}`} width={400} height={300} className="w-full h-auto transition-transform duration-300 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <Dialog>
+                      <DialogTrigger asChild>
                     <button
                       onClick={() => {
                         setPhotoIndex(index);
@@ -224,6 +228,14 @@ const HomePage: React.FC = () => {
                     >
                       View Image
                     </button>
+                    </DialogTrigger>
+                    <DialogContent className='text-white font-bold  `` p-0 border-none min-w-[60vw] -translate-x-1/2'>
+                      <DialogHeader className='sr-only'>
+                        <DialogTitle>Viewing Gallery Image</DialogTitle>
+                      </DialogHeader>
+                      <Image src={src} alt={`Gallery image ${index + 1}`} width={1920} height={1080}  />
+                    </DialogContent>
+                    </Dialog>
                   </div>
                 </motion.div>
               ))}

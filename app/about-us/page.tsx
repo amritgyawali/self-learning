@@ -2,18 +2,14 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import Image from 'next/image';
-import { useSpring, animated } from 'react-spring';
+import {motion} from 'framer-motion';
 
 const AboutUsPage: React.FC = () => {
-  const fadeIn = useSpring({
-    opacity: 1,
-    from: { opacity: 0 },
-    config: { duration: 1000 },
-  });
-
   return (
     <Layout>
-      <animated.div style={fadeIn}>
+      <motion.div initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}>
         {/* Hero Section */}
         <section className="relative h-[60vh]">
           <Image src="/images/about-us-hero.jpg" alt="About Us" layout="fill" objectFit="cover" />
@@ -32,7 +28,7 @@ const AboutUsPage: React.FC = () => {
               <div className="md:w-1/2 md:pl-12">
                 <h2 className="text-4xl font-script mb-4">Our Journey</h2>
                 <p className="mb-6">
-                  Founded in 2010 by John and Jane Doe, our wedding photography studio began as a passion project.
+                  Founded in 2000 by Hari Krishna Gyawali, our wedding photography studio began as a passion project.
                   With a shared love for capturing life's most precious moments, we set out to create a business
                   that would allow us to do what we love while providing couples with timeless memories of their
                   special day.
@@ -105,7 +101,7 @@ const AboutUsPage: React.FC = () => {
             </div>
           </div>
         </section>
-      </animated.div>
+      </motion.div>
     </Layout>
   );
 };

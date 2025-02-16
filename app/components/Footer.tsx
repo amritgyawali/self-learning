@@ -15,16 +15,16 @@ const Footer = () => {
               Capturing your precious moments with creativity and passion. We specialize in wedding photography and cinematography.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors duration-300">
+              <a href="https://www.facebook.com/weddingstorynep" className="text-gray-400 hover:text-pink-500 transition-colors duration-300">
                 <FaFacebook size={24} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors duration-300">
+              <a href="https://www.instagram.com/weddingstorynepal/" className="text-gray-400 hover:text-pink-500 transition-colors duration-300">
                 <FaInstagram size={24} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors duration-300">
+              <a href="https://www.instagram.com/weddingstorynepal/" className="text-gray-400 hover:text-pink-500 transition-colors duration-300">
                 <FaTwitter size={24} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-pink-500 transition-colors duration-300">
+              <a href="https://www.youtube.com/@weddingstorynp" className="text-gray-400 hover:text-pink-500 transition-colors duration-300">
                 <FaYoutube size={24} />
               </a>
             </div>
@@ -71,15 +71,16 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
                 <FaMapMarkerAlt className="text-pink-500 mt-1 flex-shrink-0" />
-                <span className="text-gray-400">123 Wedding Street, Mumbai, Maharashtra 400001</span>
+                <span className="text-gray-400">Butwal-10 Ramnagar, Lumbini</span>
+                <span className="text-gray-400">Kathmandu kamalpokhari </span>
               </li>
               <li className="flex items-center space-x-3">
                 <FaPhone className="text-pink-500" />
-                <span className="text-gray-400">+91 123 456 7890</span>
+                <span className="text-gray-400">+977-9867335830</span>
               </li>
               <li className="flex items-center space-x-3">
                 <FaEnvelope className="text-pink-500" />
-                <span className="text-gray-400">info@weddingphotography.com</span>
+                <span className="text-gray-400">weddingstorynepal1@gmail.com</span>
               </li>
             </ul>
           </div>

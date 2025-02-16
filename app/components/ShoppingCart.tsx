@@ -22,9 +22,9 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose, items, onR
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: '100%' }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-lg p-6 overflow-y-auto"
+          className="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-lg p-6 overflow-y-auto pt-24"
         >
-          <h2 className="text-2xl font-serif mb-4">Your Cart</h2>
+          <h2 className="text-2xl font-serif mb-4">Your Cart</h2>1
           {items.length === 0 ? (
             <p>Your cart is empty.</p>
           ) : (

@@ -15,6 +15,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import ContactImage from '@/public/images/wedding-cinema-hero.jpg'
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -60,7 +61,7 @@ const ContactPage = () => {
       {/* Hero Section */}
       <section className="relative h-[60vh]">
         <Image
-          src="/contact-hero.jpg"
+          src={ContactImage}
           alt="Contact Us"
           layout="fill"
           objectFit="cover"
@@ -77,8 +78,8 @@ const ContactPage = () => {
           <div className="grid md:grid-cols-2 gap-8">
             <div className="rounded-lg overflow-hidden">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.8134347701405!2d72.82861931744384!3d19.022236!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ce40fffffffffffffff%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1625145432935!5m2!1sen!2sin"
-                width="100%"
+                 src="https://maps.google.com/maps?width=600&height=400&hl=en&q=Wedding%20Story%20Nepal%20butwal&t=&z=14&ie=UTF8&iwloc=B&output=embed"
+          width="100%"
                 height="400"
                 style={{ border: 0 }}
                 allowFullScreen
@@ -88,15 +89,15 @@ const ContactPage = () => {
             <div className="space-y-6">
               <div>
                 <h3 className="text-2xl font-serif mb-2">Our Locations</h3>
-                <p className="text-gray-600">We're based in Mumbai and Gurgaon (Delhi NCR) in India.</p>
+                <p className="text-gray-600">We're based in Butwal and Kathmandu in Nepal.</p>
               </div>
               <div>
-                <h4 className="font-semibold mb-1">MUMBAI</h4>
-                <p className="text-gray-600">101 Rose, First Street, opp. Tea Hill, next to re-discovered cafe, Mumbai, Maharashtra 400018</p>
+                <h4 className="font-semibold mb-1">KATHMANDU</h4>
+                <p className="text-gray-600">Near KamalPokhari</p>
               </div>
               <div>
-                <h4 className="font-semibold mb-1">GURGAON</h4>
-                <p className="text-gray-600">78, G-45, HSVP/4, NEAR NEXT, Sector 82, Gurgaon, Haryana 122004</p>
+                <h4 className="font-semibold mb-1">BUTWAL</h4>
+                <p className="text-gray-600">Near Gautam Buddha Heart Hospital , Ramnagar</p>
               </div>
             </div>
           </div>

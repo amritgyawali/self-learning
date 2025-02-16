@@ -23,7 +23,8 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${isSticky ? 'bg-white shadow-md' : 'bg-transparent'}`}>
+    <header className={`fixed w-full z-50 transition-all duration-300 ${isSticky ? 'bg-white shadow-md text-black' : 'bg-transparent text-slate-300'}`}>
+      <div className={`absolute inset-0 bottom-0 h-10 bg-contain bg-repeat-x ${!isSticky ? "bg-[url('/images/garland.png')]":""}`}></div>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/">
          <Image src="/images/logo.png" alt="Logo" width={150} height={50} />

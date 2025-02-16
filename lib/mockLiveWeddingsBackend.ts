@@ -26,8 +26,8 @@ let weddings: Wedding[] = [
     title: 'Sarah & John\'s Wedding',
     createdBy: 'Wedding Planner',
     photos: [
-      { id: '1', url: '/wedding1-photo1.jpg', uploadedBy: 'Guest1', uploadedAt: '2023-06-20T10:00:00Z' },
-      { id: '2', url: '/wedding1-photo2.jpg', uploadedBy: 'Guest2', uploadedAt: '2023-06-20T11:30:00Z' },
+      { id: '1', url: '/images/gallery-1.jpg', uploadedBy: 'Guest1', uploadedAt: '2023-06-20T10:00:00Z' },
+      { id: '2', url: '/images/gallery-2.jpg', uploadedBy: 'Guest2', uploadedAt: '2023-06-20T11:30:00Z' },
     ],
     videos: [
       { id: '1', url: '/wedding1-video1.mp4', uploadedBy: 'Guest3', uploadedAt: '2023-06-20T12:45:00Z' },
@@ -38,7 +38,7 @@ let weddings: Wedding[] = [
     title: 'Emily & Michael\'s Wedding',
     createdBy: 'Bride\'s Sister',
     photos: [
-      { id: '3', url: '/wedding2-photo1.jpg', uploadedBy: 'Guest4', uploadedAt: '2023-06-21T09:15:00Z' },
+      { id: '3', url: '/images/gallery-3.jpg', uploadedBy: 'Guest4', uploadedAt: '2023-06-21T09:15:00Z' },
     ],
     videos: [],
   },

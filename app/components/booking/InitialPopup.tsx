@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { CalendarIcon } from "@heroicons/react/24/solid"
 
 const schema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -62,21 +63,30 @@ export default function InitialPopup({ isOpen, onSubmit }: InitialPopupProps) {
             />
             {errors.mobile && <p className="text-red-500">{errors.mobile.message}</p>}
           </div>
-          <div>
+          <div className="relative">
             <Label htmlFor="weddingDate">Wedding Date</Label>
-            <Controller
-              name="weddingDate"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  selected={field.value}
-                  onChange={(date) => field.onChange(date)}
-                  dateFormat="MMMM d, yyyy"
-                  minDate={new Date()}
-                  className="w-full p-2 border rounded"
-                />
-              )}
-            />
+            <div className="relative">
+              <Controller
+                name="weddingDate"
+                control={control}
+                render={({ field }) => (
+                  <div className="flex items-center">
+                    <DatePicker
+                      selected={field.value}
+                      onChange={(date) => field.onChange(date)}
+                      dateFormat="MMMM d, yyyy"
+                      minDate={new Date()}
+                      className="w-full p-2 border rounded pr-10"
+                      popperPlacement="bottom-end"
+                    />
+                    <CalendarIcon
+                      className="w-5 h-5 absolute right-3 text-gray-500 cursor-pointer"
+                      onClick={() => document.querySelector('.react-datepicker__input-container input')?.focus()}
+                    />
+                  </div>
+                )}
+              />
+            </div>
             {errors.weddingDate && <p className="text-red-500">{errors.weddingDate.message}</p>}
           </div>
           <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-300">Proceed to Packages</Button>
@@ -85,4 +95,3 @@ export default function InitialPopup({ isOpen, onSubmit }: InitialPopupProps) {
     </Dialog>
   )
 }
-

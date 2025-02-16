@@ -150,7 +150,7 @@ const ContactForm = () => {
                 id="message"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="h-32 bg-white"
+                className="h-32 bg-white placeholder:text-gray-400/50"
                 placeholder="You can mention any special requirements, eg. on 10th Dec I want candid photography + traditional videography, on 11th Dec I want candid photography and candid cinematography."
               />
             </div>
