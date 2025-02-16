@@ -80,9 +80,12 @@ export default function InitialPopup({ isOpen, onSubmit }: InitialPopupProps) {
                       popperPlacement="bottom-end"
                     />
                     <CalendarIcon
-                      className="w-5 h-5 absolute right-3 text-gray-500 cursor-pointer"
-                      onClick={() => document.querySelector('.react-datepicker__input-container input')?.focus()}
-                    />
+  className="w-5 h-5 absolute right-3 text-gray-500 cursor-pointer"
+  onClick={() => {
+    const input = document.querySelector('.react-datepicker__input-container input') as HTMLInputElement;
+    input?.focus();
+  }}
+/>
                   </div>
                 )}
               />
