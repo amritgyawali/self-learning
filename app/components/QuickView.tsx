@@ -49,7 +49,7 @@ const QuickView: React.FC<QuickViewProps> = ({ product, onClose, onAddToCart }) 
               <Star className="w-5 h-5 text-yellow-400 fill-current" />
               <span className="ml-1 text-sm text-gray-600">{product.rating} ({product.reviewCount} reviews)</span>
             </div>
-            <p className="text-xl font-semibold mb-4">₹{product.price}</p>
+            <p className="text-xl font-semibold mb-4">Rs.{product.price}</p>
             <p className="text-gray-600 mb-4">{product.description || "No description available."}</p>
             <Button 
               onClick={() => onAddToCart(product)}

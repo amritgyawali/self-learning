@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import Layout from '../components/Layout'
 import InitialPopup from '../components/booking/InitialPopup'
 import PackagesSection from '../components/booking/PackagesSection'
-import CustomizePackage from '../components/booking/CustomizePackage'
+import UnifiedPackageSelector from '../components/booking/UnifiedPackageSelector'
 import styles from '../styles/layout.module.css'
 import { Package } from '../../types'
 
@@ -48,10 +48,17 @@ export default function BookingPage() {
             
             <div className="mt-16">
               <h2 className="text-3xl font-bold text-center mb-8">Customize Your Package</h2>
-              <CustomizePackage onCustomPackageSelect={(customPackageData: Package) => {
-                setSelectedPackage(customPackageData)
-                router.push('/payment')
-              }} />
+              <div className="flex items-center justify-center">
+                <div className="w-full max-w-4xl">
+                  <UnifiedPackageSelector 
+                    userDetails={userDetails}
+                    onBookPackage={(customPackageData: Package) => {
+                      setSelectedPackage(customPackageData)
+                      router.push('/payment')
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         )}

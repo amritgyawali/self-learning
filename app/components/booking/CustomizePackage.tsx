@@ -55,14 +55,14 @@ const CustomizePackage: React.FC<CustomizePackageProps> = ({ onCustomPackageSele
               onCheckedChange={() => handleServiceToggle(service)}
             />
             <Label htmlFor={`service-${service.id}`} className="flex-grow">
-              <span className="font-semibold">{service.name}</span> - ₹{service.price.toLocaleString()}
+              <span className="font-semibold">{service.name}</span> - RS.{service.price.toLocaleString()}
               <p className="text-sm text-gray-600">{service.description}</p>
             </Label>
           </div>
         ))}
       </div>
       <div className="mt-6">
-        <p className="text-xl font-bold">Total Price: ₹{totalPrice.toLocaleString()}</p>
+        <p className="text-xl font-bold">Total Price: RS.{totalPrice.toLocaleString()}</p>
       </div>
       <Button onClick={handleSubmit} className="mt-4">Book Custom Package</Button>
     </motion.div>

@@ -33,7 +33,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose, items, onR
                 <div key={`cart-item-${item.id}`} className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="font-semibold">{item.name}</h3>
-                    <p className="text-gray-600">₹{item.price}</p>
+                    <p className="text-gray-600">Rs.{item.price}</p>
                   </div>
                   <div className="flex items-center">
                     <Input
@@ -50,7 +50,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose, items, onR
                 </div>
               ))}
               <div className="mt-4 border-t pt-4">
-                <p className="text-xl font-semibold">Total: ₹{total}</p>
+                <p className="text-xl font-semibold">Total: Rs.{total}</p>
                 <Button className="w-full mt-4 bg-[#f5d3d6] text-[#2c2c2c] hover:bg-[#e6b8bc]">
                   Proceed to Checkout
                 </Button>

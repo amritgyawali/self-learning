@@ -57,7 +57,7 @@ export default function PackagesSection({ onPackageSelect }: PackagesSectionProp
             <Image src={pkg.image!} alt={pkg.name} width={400} height={300} className="w-full h-48 object-cover" />
             <div className="p-4">
               <h3 className="text-xl font-semibold mb-2">{pkg.name}</h3>
-              <p className="text-gray-600 mb-4">₹{pkg.price.toLocaleString()}</p>
+              <p className="text-gray-600 mb-4">RS.{pkg.price.toLocaleString()}</p>
               <ul className="list-disc pl-5 mb-4">
                 {(pkg.services as string[]).map((service, index) => (
                   <li key={index} className="text-sm text-gray-600">{service}</li>

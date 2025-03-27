@@ -44,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onToggl
           <Star className="w-4 h-4 text-yellow-400 fill-current" />
           <span className="ml-1 text-sm text-gray-600">{product.rating} ({product.reviewCount} reviews)</span>
         </div>
-        <p className="text-gray-600 mb-4">₹{product.price}</p>
+        <p className="text-gray-600 mb-4">Rs.{product.price}</p>
         <div className="flex justify-between flex-wrap items-center">
           {isInCart ? <Button>Added To Cart</Button>:
           <Button 
