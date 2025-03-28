@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
-import { LayoutDashboard, ImageIcon, FileVideo, Settings, Users, MessageSquare, BarChart, Bell, Sun, Moon } from 'lucide-react'
+import { LayoutDashboard, ImageIcon, FileVideo, Settings, Users, MessageSquare, BarChart, Bell, Sun, Moon, Calendar } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { 
@@ -37,6 +37,10 @@ export default function DashboardLayout({
     { icon: Users, label: 'Users', href: '/admin/dashboard/users' },
     { icon: MessageSquare, label: 'Comments', href: '/admin/dashboard/comments' },
     { icon: BarChart, label: 'Analytics', href: '/admin/dashboard/analytics' },
+    { icon: Calendar, label: 'Calendar', href: '/admin/dashboard/calendar' },
+    { icon: BarChart, label: 'Finance', href: '/admin/dashboard/finance' },
+    { icon: Users, label: 'Staff', href: '/admin/dashboard/staff' },
+    { icon: Settings, label: 'Inventory', href: '/admin/dashboard/inventory' },
     { icon: Settings, label: 'Settings', href: '/admin/dashboard/settings' },
   ]
 
