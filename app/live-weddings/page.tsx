@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Camera, Video, Heart, Calendar } from 'lucide-react'
+import { Plus, Camera, Video, Heart, Calendar, QrCode, Upload } from 'lucide-react'
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { mockLiveWeddingsBackend } from '@/lib/mockLiveWeddingsBackend'
@@ -181,6 +182,48 @@ export default function LiveWeddingsPage() {
                 </Card>
               </motion.div>
             ))}
+          </div>
+        </section>
+
+        {/* Quick Access Section */}
+        <section className="mt-16">
+          <h2 className="text-3xl font-bold mb-6">Quick Access</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Link href="/live-weddings/guest-photos" className="no-underline">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6 text-center">
+                  <div className="p-4 bg-pink-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <Camera className="h-8 w-8 text-pink-500" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Guest Photos</h3>
+                  <p className="text-gray-600">View and manage photos shared by your guests</p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/live-weddings/guest-photos" className="no-underline">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6 text-center">
+                  <div className="p-4 bg-pink-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <QrCode className="h-8 w-8 text-pink-500" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">QR Code</h3>
+                  <p className="text-gray-600">Generate QR codes for easy photo sharing</p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/live-weddings/guest-photos/upload" className="no-underline">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardContent className="p-6 text-center">
+                  <div className="p-4 bg-pink-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <Upload className="h-8 w-8 text-pink-500" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Upload Photos</h3>
+                  <p className="text-gray-600">Share your wedding moments with everyone</p>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </section>
 
