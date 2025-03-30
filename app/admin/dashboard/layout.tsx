@@ -31,16 +31,16 @@ export default function DashboardLayout({
   }
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
+    { icon: LayoutDashboard, label: 'Overview', href: '/admin/dashboard' },
+    { icon: Calendar, label: 'Bookings', href: '/admin/dashboard/bookings' },
+    { icon: BarChart, label: 'Agile Board', href: '/admin/dashboard/agile-board' },
     { icon: ImageIcon, label: 'Photos', href: '/admin/dashboard/photos' },
     { icon: FileVideo, label: 'Videos', href: '/admin/dashboard/videos' },
     { icon: Users, label: 'Users', href: '/admin/dashboard/users' },
     { icon: MessageSquare, label: 'Comments', href: '/admin/dashboard/comments' },
     { icon: BarChart, label: 'Analytics', href: '/admin/dashboard/analytics' },
-    { icon: Calendar, label: 'Calendar', href: '/admin/dashboard/calendar' },
-    { icon: BarChart, label: 'Finance', href: '/admin/dashboard/finance' },
     { icon: Users, label: 'Staff', href: '/admin/dashboard/staff' },
-    { icon: Settings, label: 'Inventory', href: '/admin/dashboard/inventory' },
+    { icon: Bell, label: 'Notifications', href: '/admin/dashboard/notifications' },
     { icon: Settings, label: 'Settings', href: '/admin/dashboard/settings' },
   ]
 
