@@ -25,6 +25,7 @@ interface ServiceOption {
   price: number;
   description?: string;
   category: 'service' | 'package';
+  defaultDays?: number;
 }
 
 export default function QuotationGenerator({
@@ -34,25 +35,28 @@ export default function QuotationGenerator({
 }: QuotationGeneratorProps) {
   // Define all available service options
   const serviceOptions: ServiceOption[] = [
-    { id: 1, name: "Drone Photography", price: 5000, description: "Aerial shots of your venue and ceremony", category: 'service' },
-    { id: 2, name: "Photo Booth", price: 7000, description: "Fun props and instant prints for your guests", category: 'service' },
-    { id: 3, name: "Additional Photographer", price: 10000, description: "Extra coverage from a second shooter", category: 'service' },
-    { id: 4, name: "Videography", price: 15000, description: "Professional video coverage of your big day", category: 'service' },
-    { id: 5, name: "Album Upgrade", price: 8000, description: "Upgrade to a premium, larger album", category: 'service' },
-  ];
+    { id: 1, name: "Drone Photography", price: 10000, description: "Aerial shots of your venue and ceremony", category: 'service', defaultDays: 1 },
+    { id: 2, name: "Photo Booth", price: 7000, description: "Fun props and instant prints for your guests", category: 'service', defaultDays: 1 },
+    { id: 3, name: "Additional Photographer", price: 10000, description: "Extra coverage from a second shooter", category: 'service', defaultDays: 1 },
+    { id: 4, name: "Videography", price: 15000, description: "Professional video coverage of your big day", category: 'service', defaultDays: 1 },
+    { id: 5, name: "Karizma Album", price: 15000, description: "Print larger Premium album", category: 'service', defaultDays: 1 },
+    { id: 6, name: "Reception", price: 39000, description: "Complete coverage of your reception", category: 'package', defaultDays: 1 },
+    { id: 7, name: "Haldi/Mehendi", price: 20000, description: "Coverage of your mehendi ceremony", category: 'package', defaultDays: 1 },
+    { id: 8, name: "Engagement", price: 25000, description: "Coverage of your engagement ceremony", category: 'package', defaultDays: 1 },
+ 
+  ]
 
   const packageOptions: ServiceOption[] = [
-    { id: 6, name: "Classic Package", price: 29999, description: "8 Hours of Coverage, 1 Photographer, Online Gallery, 100 Edited Digital Images", category: 'package' },
-    { id: 7, name: "Premium Package", price: 49999, description: "10 Hours of Coverage, 2 Photographers, Online Gallery, 200 Edited Digital Images, Engagement Shoot", category: 'package' },
-    { id: 8, name: "One day wedding", price: 49999, description: "Full day coverage of your wedding ceremony", category: 'package' },
-    { id: 9, name: "Both Side wedding", price: 70999, description: "Coverage for both bride and groom sides", category: 'package' },
-    { id: 10, name: "Reception", price: 30999, description: "Complete coverage of your reception", category: 'package' },
-    { id: 11, name: "Mehendi", price: 15999, description: "Coverage of your mehendi ceremony", category: 'package' },
-    { id: 12, name: "Engagement", price: 15999, description: "Coverage of your engagement ceremony", category: 'package' },
-  ];
+    { id: 9, name: "Classic Package", price: 29999, description: "8 Hours of Coverage, 1 Photographer, Online Gallery, 100 Edited Digital Images", category: 'package', defaultDays: 1 },
+    { id: 10, name: "Premium Wedding Package", price: 79000, description: "Full Wedding Photo & Video, 2 Photographers ,1 Videographer, Online Gallery,Edited Digital Images,Cinematic Highlight Video,Love Story", category: 'package', defaultDays: 1 },
+    { id: 11, name: "One day wedding", price: 49999, description: "Full day coverage of your wedding ceremony", category: 'package', defaultDays: 1 },
+    { id: 12, name: "Both Side wedding", price: 120000, description: "Coverage for both bride and groom sides", category: 'package', defaultDays: 1 },
+  ]
 
   // State for tracking selected options
   const [selectedOptions, setSelectedOptions] = useState<ServiceOption[]>([]);
+  // State for tracking selected days for each option
+  const [selectedDays, setSelectedDays] = useState<Record<number, number>>({});
   const [calculatedTotal, setCalculatedTotal] = useState(totalPrice);
 
   // Handle option selection
@@ -62,6 +66,10 @@ export default function QuotationGenerator({
     
     if (isSelected) {
       newSelectedOptions = selectedOptions.filter(item => item.id !== option.id);
+      // Remove days selection when option is deselected
+      const newSelectedDays = { ...selectedDays };
+      delete newSelectedDays[option.id];
+      setSelectedDays(newSelectedDays);
     } else {
       // If selecting a package, remove any other selected packages
       if (option.category === 'package') {
@@ -72,12 +80,37 @@ export default function QuotationGenerator({
       } else {
         newSelectedOptions = [...selectedOptions, option];
       }
+      // Set default days when option is selected
+      setSelectedDays(prev => ({
+        ...prev,
+        [option.id]: option.defaultDays || 1
+      }));
     }
     
     setSelectedOptions(newSelectedOptions);
     
-    // Calculate new total
-    const newTotal = newSelectedOptions.reduce((sum, item) => sum + item.price, 0);
+    // Calculate new total based on selected options and their days
+    updateTotalPrice(newSelectedOptions, selectedDays);
+  };
+
+  // Handle days change for an option
+  const handleDaysChange = (optionId: number, days: number) => {
+    const newSelectedDays = {
+      ...selectedDays,
+      [optionId]: days
+    };
+    setSelectedDays(newSelectedDays);
+    
+    // Update total price when days change
+    updateTotalPrice(selectedOptions, newSelectedDays);
+  };
+
+  // Calculate total price based on selected options and their days
+  const updateTotalPrice = (options: ServiceOption[], days: Record<number, number>) => {
+    const newTotal = options.reduce((sum, item) => {
+      const optionDays = days[item.id] || item.defaultDays || 1;
+      return sum + (item.price * optionDays);
+    }, 0);
     setCalculatedTotal(newTotal);
   };
 
@@ -89,6 +122,7 @@ export default function QuotationGenerator({
     // Add header text first (will always be visible)
     doc.setFontSize(20);
     doc.text('Wedding Photography Quotation', pageWidth / 2, 20, { align: 'center' });
+    doc.text('Wedding Story Nepal', pageWidth / 2, 20, { align: 'center' });
     
     // Try to load logo with proper error handling
     try {
@@ -154,31 +188,44 @@ export default function QuotationGenerator({
       ? selectedOptions.map(option => [
           option.name,
           option.description || '',
-          `Rs.${option.price.toLocaleString()}`
+          selectedDays[option.id] || option.defaultDays || 1,
+          `Rs.${option.price.toLocaleString()}`,
+          `Rs.${((selectedDays[option.id] || option.defaultDays || 1) * option.price).toLocaleString()}`
         ])
       : (selectedServices as any[])?.map(service => [
           service.name,
           service.description || '',
-          `Rs.${service.price.toLocaleString()}`
+          service.days || 1,
+          `Rs.${service.price.toLocaleString()}`,
+          `Rs.${((service.days || 1) * service.price).toLocaleString()}`
         ]) || [];
 
     // Add services table
+    // Calculate total table width based on column widths
+    const totalTableWidth = 40 + 70 + 20 + 30 + 30; // Sum of all column widths
+    // Calculate margins to center the table
+    const leftMargin = (pageWidth - totalTableWidth) / 2;
+    
     autoTable(doc, {
       startY: 110,
       head: [[
         { content: 'Selected Services', styles: { halign: 'left', fillColor: [41, 128, 185] } },
         { content: 'Description', styles: { halign: 'left', fillColor: [41, 128, 185] } },
-        { content: 'Price', styles: { halign: 'right', fillColor: [41, 128, 185] } }
+        { content: 'Days', styles: { halign: 'center', fillColor: [41, 128, 185] } },
+        { content: 'Price/Day', styles: { halign: 'right', fillColor: [41, 128, 185] } },
+        { content: 'Total Price', styles: { halign: 'right', fillColor: [41, 128, 185] } }
       ]],
       body: tableData,
       theme: 'grid',
       headStyles: { fillColor: [41, 128, 185], textColor: 255 },
       columnStyles: {
-        0: { cellWidth: 50 },
-        1: { cellWidth: 90 },
-        2: { cellWidth: 40, halign: 'right' }
+        0: { cellWidth: 40 },
+        1: { cellWidth: 70 },
+        2: { cellWidth: 20, halign: 'center' },
+        3: { cellWidth: 30, halign: 'right' },
+        4: { cellWidth: 30, halign: 'right' }
       },
-      margin: { left: 20, right: 20 }
+      margin: { left: leftMargin, right: leftMargin }
     });
 
     // Add total price
@@ -195,8 +242,8 @@ export default function QuotationGenerator({
     // Add contact information
     doc.setFontSize(10);
     doc.text('For any inquiries, please contact:', 20, finalY + 60);
-    doc.text('Phone: +91 98765 43210', 20, finalY + 70);
-    doc.text('Email: info@weddingphotography.com', 20, finalY + 80);
+    doc.text('Phone: +977-9867335830', 20, finalY + 70);
+    doc.text('Email: weddingstorynepal1@gmail.com', 20, finalY + 80);
 
     // Save the PDF
     doc.save(`Wedding_Photography_Quotation_${userDetails.name}.pdf`);
@@ -210,17 +257,38 @@ export default function QuotationGenerator({
         <h4 className="text-lg font-semibold mb-2">Photography Packages</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {packageOptions.map((option) => (
-            <div key={option.id} className="flex items-start space-x-2 p-2 border rounded hover:bg-gray-50">
-              <Checkbox
-                id={`option-${option.id}`}
-                checked={selectedOptions.some(item => item.id === option.id)}
-                onCheckedChange={() => handleOptionToggle(option)}
-                className="mt-1"
-              />
-              <Label htmlFor={`option-${option.id}`} className="flex-grow cursor-pointer">
-                <div className="font-medium">{option.name} - Rs.{option.price.toLocaleString()}</div>
-                <div className="text-sm text-gray-600">{option.description}</div>
-              </Label>
+            <div key={option.id} className="flex flex-col p-2 border rounded hover:bg-gray-50">
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id={`option-${option.id}`}
+                  checked={selectedOptions.some(item => item.id === option.id)}
+                  onCheckedChange={() => handleOptionToggle(option)}
+                  className="mt-1"
+                />
+                <Label htmlFor={`option-${option.id}`} className="flex-grow cursor-pointer">
+                  <div className="font-medium">{option.name} - Rs.{option.price.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">{option.description}</div>
+                </Label>
+              </div>
+              
+              {selectedOptions.some(item => item.id === option.id) && (
+                <div className="mt-2 ml-6 flex items-center space-x-2">
+                  <Label htmlFor={`days-${option.id}`} className="text-sm">Days:</Label>
+                  <select
+                    id={`days-${option.id}`}
+                    value={selectedDays[option.id] || option.defaultDays || 1}
+                    onChange={(e) => handleDaysChange(option.id, parseInt(e.target.value))}
+                    className="border rounded p-1 text-sm"
+                  >
+                    {[1, 2, 3, 4, 5].map(num => (
+                      <option key={num} value={num}>{num}</option>
+                    ))}
+                  </select>
+                  <span className="text-sm text-gray-600">
+                    Total: Rs.{((selectedDays[option.id] || option.defaultDays || 1) * option.price).toLocaleString()}
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -230,17 +298,38 @@ export default function QuotationGenerator({
         <h4 className="text-lg font-semibold mb-2">Additional Services</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {serviceOptions.map((option) => (
-            <div key={option.id} className="flex items-start space-x-2 p-2 border rounded hover:bg-gray-50">
-              <Checkbox
-                id={`option-${option.id}`}
-                checked={selectedOptions.some(item => item.id === option.id)}
-                onCheckedChange={() => handleOptionToggle(option)}
-                className="mt-1"
-              />
-              <Label htmlFor={`option-${option.id}`} className="flex-grow cursor-pointer">
-                <div className="font-medium">{option.name} - Rs.{option.price.toLocaleString()}</div>
-                <div className="text-sm text-gray-600">{option.description}</div>
-              </Label>
+            <div key={option.id} className="flex flex-col p-2 border rounded hover:bg-gray-50">
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id={`option-${option.id}`}
+                  checked={selectedOptions.some(item => item.id === option.id)}
+                  onCheckedChange={() => handleOptionToggle(option)}
+                  className="mt-1"
+                />
+                <Label htmlFor={`option-${option.id}`} className="flex-grow cursor-pointer">
+                  <div className="font-medium">{option.name} - Rs.{option.price.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">{option.description}</div>
+                </Label>
+              </div>
+              
+              {selectedOptions.some(item => item.id === option.id) && (
+                <div className="mt-2 ml-6 flex items-center space-x-2">
+                  <Label htmlFor={`days-${option.id}`} className="text-sm">Days:</Label>
+                  <select
+                    id={`days-${option.id}`}
+                    value={selectedDays[option.id] || option.defaultDays || 1}
+                    onChange={(e) => handleDaysChange(option.id, parseInt(e.target.value))}
+                    className="border rounded p-1 text-sm"
+                  >
+                    {[1, 2, 3, 4, 5].map(num => (
+                      <option key={num} value={num}>{num}</option>
+                    ))}
+                  </select>
+                  <span className="text-sm text-gray-600">
+                    Total: Rs.{((selectedDays[option.id] || option.defaultDays || 1) * option.price).toLocaleString()}
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>
