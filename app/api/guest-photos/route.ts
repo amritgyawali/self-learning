@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import * as faceapi from 'face-api.js'
+import * as faceapi from '@vladmandic/face-api'
 import { Twilio } from 'twilio'
 
 // Initialize Twilio client (in production, use environment variables)

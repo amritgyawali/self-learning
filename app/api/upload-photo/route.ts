@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { writeFile } from 'fs/promises'
 import path from 'path'
-import * as faceapi from 'face-api.js'
+import * as faceapi from '@vladmandic/face-api'
 import { Twilio } from 'twilio'
 
 // Initialize Twilio client
