@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import * as faceapi from '@vladmandic/face-api'
 import { Camera, Upload, Check, Loader2, Wand2, Smile, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -46,16 +45,22 @@ export default function PhotoUploadPage({ params }: { params: { eventId: string 
 
   const loadFaceDetectionModels = async () => {
     try {
-      await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-        faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-        faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-        faceapi.nets.faceExpressionNet.loadFromUri('/models')
-      ])
-      toast({
-        title: 'Ready!',
-        description: 'AI features loaded successfully.',
-      })
+      // Dynamically import face-api to avoid SSR issues
+      const faceapi = await import('@vladmandic/face-api');
+      
+      // Load models only in browser environment
+      if (typeof window !== 'undefined') {
+        await Promise.all([
+          faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+          faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+          faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+          faceapi.nets.faceExpressionNet.loadFromUri('/models')
+        ])
+        toast({
+          title: 'Ready!',
+          description: 'AI features loaded successfully.',
+        })
+      }
     } catch (error) {
       console.error('Error loading face detection models:', error)
       toast({
@@ -186,6 +191,32 @@ export default function PhotoUploadPage({ params }: { params: { eventId: string 
               variant: 'default'
             })
           }
+          
+          // Detect faces client-side
+          try {
+            const faceapi = await import('@vladmandic/face-api');
+            const detections = await faceapi.detectAllFaces(img, new faceapi.TinyFaceDetectorOptions())
+              .withFaceLandmarks()
+              .withFaceExpressions();
+            
+            setFaceDetected(detections.length > 0);
+            
+            if (detections.length > 0) {
+              // Extract dominant expression
+              const expressions = detections[0].expressions;
+              if (expressions) {
+                const dominantExpression = Object.entries(expressions)
+                  .reduce((a, b) => a[1] > b[1] ? a : b)[0];
+                
+                toast({
+                  title: 'Expression Detected',
+                  description: `We detected a ${dominantExpression} expression in your photo!`,
+                });
+              }
+            }
+          } catch (error) {
+            console.error('Error detecting faces:', error);
+          }
         }
       }
       reader.readAsDataURL(file)
@@ -247,33 +278,41 @@ export default function PhotoUploadPage({ params }: { params: { eventId: string 
 
     setIsProcessing(true)
     try {
-      // Detect faces and expressions in the photo
-      const img = await faceapi.bufferToImage(photo)
-      const detections = await faceapi.detectAllFaces(img, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptors()
-        .withFaceExpressions()
+      // Process face detection client-side
+      let faceDescriptor = ''
+      let dominantExpression = ''
+      
+      if (faceDetected) {
+        try {
+          // Dynamically import face-api to avoid SSR issues
+          const faceapi = await import('@vladmandic/face-api');
+          
+          // Get face descriptor for the photo
+          const imgEl = await faceapi.bufferToImage(photo)
+          const detections = await faceapi.detectAllFaces(imgEl, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceDescriptors()
+            .withFaceExpressions()
 
-      // Analyze expressions
-      const expressions = detections[0]?.expressions
-      if (expressions) {
-        const dominantExpression = Object.entries(expressions)
-          .reduce((a, b) => a[1] > b[1] ? a : b)[0]
-        
-        toast({
-          title: 'Expression Detected',
-          description: `We detected a ${dominantExpression} expression in your photo!`,
-        })
-      }
-
-      if (detections.length === 0) {
-        toast({
-          title: 'No Face Detected',
-          description: 'Please ensure your face is clearly visible in the photo.',
-          variant: 'destructive'
-        })
-        setIsProcessing(false)
-        return
+          if (detections.length > 0) {
+            // Get face descriptor as string
+            faceDescriptor = detections[0].descriptor.toString()
+            
+            // Get dominant expression
+            const expressions = detections[0].expressions
+            if (expressions) {
+              dominantExpression = Object.entries(expressions)
+                .reduce((a, b) => a[1] > b[1] ? a : b)[0]
+              
+              toast({
+                title: 'Expression Detected',
+                description: `We detected a ${dominantExpression} expression in your photo!`,
+              })
+            }
+          }
+        } catch (error) {
+          console.error('Error processing face detection:', error)
+        }
       }
 
       // Apply filters and enhancements
@@ -306,6 +345,9 @@ export default function PhotoUploadPage({ params }: { params: { eventId: string 
       formData.append('eventId', params.eventId)
       formData.append('filters', JSON.stringify(filters))
       formData.append('shareOptions', JSON.stringify(shareOptions))
+      formData.append('faceDetected', String(faceDetected))
+      formData.append('faceDescriptor', faceDescriptor)
+      formData.append('dominantExpression', dominantExpression)
 
       // Upload to server
       const response = await fetch('/api/upload-photo', {

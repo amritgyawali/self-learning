@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { writeFile } from 'fs/promises'
 import path from 'path'
-import * as faceapi from '@vladmandic/face-api'
+// Remove direct import of face-api to avoid server-side issues
 import { Twilio } from 'twilio'
 
 // Initialize Twilio client
@@ -38,18 +38,22 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(bytes)
     await writeFile(filepath, new Uint8Array(buffer))
 
-    // Process image with face-api.js
-    const blob = new Blob([buffer], { type: 'image/jpeg' });
-    const image = await faceapi.bufferToImage(blob)
-    const detections = await faceapi.detectAllFaces(image, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceDescriptors()
+    // Get face detection results from client-side processing
+    const faceDetected = formData.get('faceDetected') === 'true'
+    const faceDescriptor = formData.get('faceDescriptor') as string
+    
+    if (!faceDetected) {
+      return NextResponse.json(
+        { error: 'No faces detected in the photo' },
+        { status: 400 }
+      )
+    }
 
     // Store face descriptors for future matching
     const faceData = {
       name,
       phone,
-      faceDescriptor: detections[0].descriptor.toString(),
+      faceDescriptor: faceDescriptor || '',
       photoUrl: `/uploads/${eventId}/${filename}`
     }
 

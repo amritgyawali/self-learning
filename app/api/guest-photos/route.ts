@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import * as faceapi from '@vladmandic/face-api'
+// Remove direct import of face-api to avoid server-side issues
 import { Twilio } from 'twilio'
 
 // Initialize Twilio client (in production, use environment variables)
@@ -37,16 +37,10 @@ export async function POST(request: NextRequest) {
     const eventId = formData.get('eventId') as string
     const filters = JSON.parse(formData.get('filters') as string)
     const shareOptions = JSON.parse(formData.get('shareOptions') as string)
+    // Get face detection results from client-side processing
+    const faceDetected = formData.get('faceDetected') === 'true'
 
-    // Process photo with face recognition
-    const blob = new Blob([await photo.arrayBuffer()], { type: photo.type });
-    const img = await faceapi.bufferToImage(blob);
-    const detections = await faceapi.detectAllFaces(img, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceDescriptors()
-      .withFaceExpressions()
-
-    if (detections.length === 0) {
+    if (!faceDetected) {
       return NextResponse.json(
         { error: 'No faces detected in the photo' },
         { status: 400 }
