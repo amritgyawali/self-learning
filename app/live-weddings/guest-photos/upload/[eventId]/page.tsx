@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import * as faceapi from 'face-api.js'
+import * as faceapi from '@vladmandic/face-api'
 import { Camera, Upload, Check, Loader2, Wand2, Smile, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
