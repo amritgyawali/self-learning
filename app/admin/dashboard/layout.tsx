@@ -41,6 +41,7 @@ export default function DashboardLayout({
     { icon: BarChart, label: 'Analytics', href: '/admin/dashboard/analytics' },
     { icon: Users, label: 'Staff', href: '/admin/dashboard/staff' },
     { icon: Bell, label: 'Notifications', href: '/admin/dashboard/notifications' },
+    { icon: Settings, label: 'Packages', href: '/admin/dashboard/packages' },
     { icon: Settings, label: 'Settings', href: '/admin/dashboard/settings' },
   ]
 

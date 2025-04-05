@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -28,25 +28,57 @@ interface UnifiedPackageSelectorProps {
 }
 
 const UnifiedPackageSelector: React.FC<UnifiedPackageSelectorProps> = ({ userDetails, onBookPackage }) => {
-  // Define all available service options
-  const serviceOptions: ServiceOption[] = [
-    { id: 1, name: "Drone Photography", price: 10000, description: "Aerial shots of your venue and ceremony", category: 'service', defaultDays: 1 },
-    { id: 2, name: "Photo Booth", price: 7000, description: "Fun props and instant prints for your guests", category: 'service', defaultDays: 1 },
-    { id: 3, name: "Additional Photographer", price: 10000, description: "Extra coverage from a second shooter", category: 'service', defaultDays: 1 },
-    { id: 4, name: "Videography", price: 15000, description: "Professional video coverage of your big day", category: 'service', defaultDays: 1 },
-    { id: 5, name: "Karizma Album", price: 15000, description: "Print larger Premium album", category: 'service', defaultDays: 1 },
-    { id: 6, name: "Reception", price: 39000, description: "Complete coverage of your reception", category: 'package', defaultDays: 1 },
-    { id: 7, name: "Haldi/Mehendi", price: 20000, description: "Coverage of your mehendi ceremony", category: 'package', defaultDays: 1 },
-    { id: 8, name: "Engagement", price: 25000, description: "Coverage of your engagement ceremony", category: 'package', defaultDays: 1 },
- 
-  ]
+  // State for service and package options
+  const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>([])
+  const [packageOptions, setPackageOptions] = useState<ServiceOption[]>([])
 
-  const packageOptions: ServiceOption[] = [
-    { id: 9, name: "Classic Package", price: 29999, description: "8 Hours of Coverage, 1 Photographer, Online Gallery, 100 Edited Digital Images", category: 'package', defaultDays: 1 },
-    { id: 10, name: "Premium Wedding Package", price: 79000, description: "Full Wedding Photo & Video, 2 Photographers ,1 Videographer, Online Gallery,Edited Digital Images,Cinematic Highlight Video,Love Story", category: 'package', defaultDays: 1 },
-    { id: 11, name: "One day wedding", price: 49999, description: "Full day coverage of your wedding ceremony", category: 'package', defaultDays: 1 },
-    { id: 12, name: "Both Side wedding", price: 120000, description: "Coverage for both bride and groom sides", category: 'package', defaultDays: 1 },
-  ]
+  // Load packages using packageService on component mount
+  useEffect(() => {
+    const loadPackages = () => {
+      try {
+        // Import the packageService functions
+        import('@/app/lib/packageService').then(({ getAllPackages, getPackagesByCategory }) => {
+          // Get all packages using the service
+          const allPackages = getAllPackages()
+          
+          // Split into services and packages based on category
+          const services = allPackages.filter((pkg: ServiceOption) => pkg.category === 'service')
+          const packages = allPackages.filter((pkg: ServiceOption) => pkg.category === 'package')
+          
+          setServiceOptions(services)
+          setPackageOptions(packages)
+        }).catch(error => {
+          console.error('Error importing packageService:', error)
+          // Fallback to default options if service can't be loaded
+          // Fallback to default options if no packages are found in localStorage
+          const defaultServices = [
+            { id: 1, name: "Drone Photography", price: 10000, description: "Aerial shots of your venue and ceremony", category: 'service', defaultDays: 1 },
+            { id: 2, name: "Photo Booth", price: 7000, description: "Fun props and instant prints for your guests", category: 'service', defaultDays: 1 },
+            { id: 3, name: "Additional Photographer", price: 10000, description: "Extra coverage from a second shooter", category: 'service', defaultDays: 1 },
+            { id: 4, name: "Videography", price: 15000, description: "Professional video coverage of your big day", category: 'service', defaultDays: 1 },
+            { id: 5, name: "Karizma Album", price: 15000, description: "Print larger Premium album", category: 'service', defaultDays: 1 },
+            { id: 6, name: "Reception", price: 39000, description: "Complete coverage of your reception", category: 'package', defaultDays: 1 },
+            { id: 7, name: "Haldi/Mehendi", price: 20000, description: "Coverage of your mehendi ceremony", category: 'package', defaultDays: 1 },
+            { id: 8, name: "Engagement", price: 25000, description: "Coverage of your engagement ceremony", category: 'package', defaultDays: 1 },
+          ]
+          
+          const defaultPackages = [
+            { id: 9, name: "Classic Package", price: 29999, description: "8 Hours of Coverage, 1 Photographer, Online Gallery, 100 Edited Digital Images", category: 'package', defaultDays: 1 },
+            { id: 10, name: "Premium Wedding Package", price: 79000, description: "Full Wedding Photo & Video, 2 Photographers, 1 Videographer, Online Gallery, Edited Digital Images, Cinematic Highlight Video, Love Story", category: 'package', defaultDays: 1 },
+            { id: 11, name: "One day wedding", price: 49999, description: "Full day coverage of your wedding ceremony", category: 'package', defaultDays: 1 },
+            { id: 12, name: "Both Side wedding", price: 120000, description: "Coverage for both bride and groom sides", category: 'package', defaultDays: 1 },
+          ]
+          
+          setServiceOptions(defaultServices as ServiceOption[])
+          setPackageOptions(defaultPackages as ServiceOption[])
+        })
+      } catch (error) {
+        console.error('Error loading packages:', error)
+      }
+    }
+    
+    loadPackages()
+  }, [])
 
   // State for tracking selected options
   const [selectedOptions, setSelectedOptions] = useState<ServiceOption[]>([])

@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { mockLiveWeddingsBackend } from '@/lib/mockLiveWeddingsBackend'
 import Image from 'next/image'
 import Layout from '../../components/Layout'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 interface Wedding {
   id: string
@@ -78,7 +79,13 @@ export default function WeddingPage() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 pt-20 pb-8 flex items-center justify-center min-h-screen">
+          <LoadingSpinner size="large" text="Loading wedding details..." />
+        </div>
+      </Layout>
+    )
   }
 
   if (!wedding) {

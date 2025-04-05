@@ -12,6 +12,14 @@ export const metadata = {
   description: 'Capture your special moments with our professional wedding photography services.',
 };
 
+// Initialize packages in localStorage when the app starts
+import { initializePackages } from './lib/packageService'
+
+// Check if we're on the client side before initializing
+if (typeof window !== 'undefined') {
+  initializePackages()
+}
+
 export default function RootLayout({
   children,
 }: {

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,8 @@ interface PackagesSectionProps {
   onPackageSelect: (pkg: Package) => void;
 }
 
-const packages: Package[] = [
+// Default packages to use if none are found in localStorage
+const defaultPackages: Package[] = [
   {
     id: 1,
     name: "Classic Package",
@@ -39,6 +41,37 @@ const packages: Package[] = [
 ];
 
 export default function PackagesSection({ onPackageSelect }: PackagesSectionProps) {
+  const [packages, setPackages] = useState<Package[]>(defaultPackages);
+  
+  // Load packages using packageService on component mount
+  useEffect(() => {
+    try {
+      // Import the packageService functions
+      import('@/app/lib/packageService').then(({ getPackagesByCategory }) => {
+        // Get packages with category 'package'
+        const packageData = getPackagesByCategory('package');
+        
+        // Map to ensure they have the correct structure for this component
+        const mainPackages = packageData.map((pkg: any) => ({
+          id: pkg.id,
+          name: pkg.name,
+          price: pkg.price,
+          // Use a default image if none is provided
+          image: pkg.image || "/classic-package.jpg",
+          // Convert description to services array if needed
+          services: pkg.services || [pkg.description],
+        }));
+        
+        if (mainPackages.length > 0) {
+          setPackages(mainPackages);
+        }
+      }).catch(error => {
+        console.error('Error importing packageService:', error);
+      });
+    } catch (error) {
+      console.error('Error loading packages:', error);
+    }
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

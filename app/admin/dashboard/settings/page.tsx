@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,20 +8,9 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
-
-type Settings = {
-  siteName: string;
-  siteDescription: string;
-  contactEmail: string;
-  contactPhone: string;
-  address: string;
-  enableComments: boolean;
-  enableBooking: boolean;
-  teamEmails: string;
-  teamPhoneNumbers: string;
-  enableEmailNotifications: boolean;
-  enableSMSNotifications: boolean;
-};
+import { useToast } from "@/hooks/use-toast"
+import { getSettings, saveSettings, Settings } from '@/app/lib/settingsService'
+import LoadingOverlay from '@/components/LoadingOverlay'
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<Settings>({
@@ -37,6 +26,26 @@ export default function SettingsPage() {
     enableEmailNotifications: false,
     enableSMSNotifications: false,
   })
+  const [isLoading, setIsLoading] = useState(true)
+  const { toast } = useToast()
+
+  useEffect(() => {
+    // Load settings when component mounts
+    setIsLoading(true)
+    try {
+      const loadedSettings = getSettings()
+      setSettings(loadedSettings)
+    } catch (error) {
+      console.error('Failed to load settings:', error)
+      toast({
+        title: "Error",
+        description: "Failed to load settings. Please try again.",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }, [toast])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -49,16 +58,22 @@ export default function SettingsPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically send the settings to your backend
-    console.log('Settings saved:', settings)
-    // You can add a toast notification here to inform the user that settings were saved
+    // Save settings using the settingsService
+    saveSettings(settings)
+    
+    // Show success toast notification
+    toast({
+      title: "Settings saved",
+      description: "Your website settings have been updated successfully.",
+    })
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-3xl font-bold">Website Settings</h2>
+    <LoadingOverlay isLoading={isLoading} loadingText="Loading settings..." spinnerSize="large">
+      <div className="space-y-6">
+        <h2 className="text-3xl font-bold">Website Settings</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -214,7 +229,8 @@ export default function SettingsPage() {
         </motion.div>
 
         <Button type="submit">Save Settings</Button>
-      </form>
-    </div>
+        </form>
+      </div>
+    </LoadingOverlay>
   )
 }

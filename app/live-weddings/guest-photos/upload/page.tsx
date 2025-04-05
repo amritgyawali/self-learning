@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import LoadingOverlay from '@/components/LoadingOverlay';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -100,8 +101,9 @@ export default function GuestPhotoUpload() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <Card className="p-6 space-y-6">
+    <LoadingOverlay isLoading={isUploading} loadingText="Uploading your photo..." spinnerSize="large">
+      <div className="container mx-auto px-4 py-8 max-w-2xl">
+        <Card className="p-6 space-y-6">
         <h1 className="text-3xl font-bold text-center mb-8">Upload Your Photos</h1>
         
         <div className="space-y-4">
@@ -256,7 +258,8 @@ export default function GuestPhotoUpload() {
             {isUploading ? 'Uploading...' : 'Upload Photo'}
           </Button>
         </div>
-      </Card>
-    </div>
+        </Card>
+      </div>
+    </LoadingOverlay>
   );
 }
