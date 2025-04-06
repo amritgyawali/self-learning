@@ -31,17 +31,30 @@ export default function DashboardLayout({
   }
 
   const menuItems = [
+    // Dashboard & Analytics
     { icon: LayoutDashboard, label: 'Overview', href: '/admin/dashboard' },
-    { icon: Calendar, label: 'Bookings', href: '/admin/dashboard/bookings' },
-    { icon: BarChart, label: 'Agile Board', href: '/admin/dashboard/agile-board' },
-    { icon: ImageIcon, label: 'Photos', href: '/admin/dashboard/photos' },
-    { icon: FileVideo, label: 'Videos', href: '/admin/dashboard/videos' },
-    { icon: Users, label: 'Users', href: '/admin/dashboard/users' },
-    { icon: MessageSquare, label: 'Comments', href: '/admin/dashboard/comments' },
     { icon: BarChart, label: 'Analytics', href: '/admin/dashboard/analytics' },
+    
+    // Photography Management
+    { icon: ImageIcon, label: 'Photos', href: '/admin/dashboard/photos' },
+    { icon: ImageIcon, label: 'AI Photo Management', href: '/admin/dashboard/ai-photo-management' },
+    { icon: ImageIcon, label: 'Guest Photos', href: '/admin/dashboard/photos/guest-photos' },
+    { icon: FileVideo, label: 'Videos', href: '/admin/dashboard/videos' },
+    
+    // Business Management
+    { icon: Calendar, label: 'Bookings', href: '/admin/dashboard/bookings' },
+    { icon: Users, label: 'Client Management', href: '/admin/dashboard/client-management' },
     { icon: Users, label: 'Staff', href: '/admin/dashboard/staff' },
-    { icon: Bell, label: 'Notifications', href: '/admin/dashboard/notifications' },
+    { icon: Settings, label: 'Equipment', href: '/admin/dashboard/equipment-management' },
     { icon: Settings, label: 'Packages', href: '/admin/dashboard/packages' },
+    
+    // Communication & Tasks
+    { icon: BarChart, label: 'Agile Board', href: '/admin/dashboard/agile-board' },
+    { icon: MessageSquare, label: 'Comments', href: '/admin/dashboard/comments' },
+    { icon: Bell, label: 'Notifications', href: '/admin/dashboard/notifications' },
+    
+    // System
+    { icon: Users, label: 'Users', href: '/admin/dashboard/users' },
     { icon: Settings, label: 'Settings', href: '/admin/dashboard/settings' },
   ]
 

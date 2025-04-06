@@ -40,9 +40,18 @@ export async function POST(request: NextRequest) {
     // Get face detection results from client-side processing
     const faceDetected = formData.get('faceDetected') === 'true'
 
+    // Instead of rejecting photos without faces, we'll just log a warning
+    // and continue processing the photo
+    let warningMessage = ''
     if (!faceDetected) {
+      warningMessage = 'No faces were detected in the photo. Processing continued.'
+      console.log('Warning: No faces detected in photo uploaded by', name)
+    }
+
+    // Validate required fields
+    if (!photo || !name || !phone) {
       return NextResponse.json(
-        { error: 'No faces detected in the photo' },
+        { error: 'Missing required fields' },
         { status: 400 }
       )
     }
@@ -66,7 +75,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Photo processed and shared successfully',
+      message: warningMessage || 'Photo processed and shared successfully',
       photoUrl
     })
   } catch (error) {
