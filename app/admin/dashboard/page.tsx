@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
   ImageIcon, FileVideo, Users, Eye, ArrowUp, ArrowDown,
-  Calendar, Clock, TrendingUp, Activity, RefreshCcw
+  Calendar, Clock, TrendingUp, Activity, RefreshCcw, Sparkles, Palette, Settings, LayoutDashboard
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -23,6 +23,8 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import Link from "next/link"
 
 // Mock data - Replace with real API calls
 const visitorData = [
@@ -115,6 +117,7 @@ const recentActivity = [
 export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [currentTime, setCurrentTime] = useState<string | null>(null)
+  const [activeFilter, setActiveFilter] = useState<string>('all')
 
   // Ensure time is only set on client side
   useEffect(() => {
@@ -284,8 +287,23 @@ export default function DashboardPage() {
       {/* Recent Activity */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>Latest updates and notifications</CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Live Activity Feed</CardTitle>
+              <CardDescription>Real-time updates and system alerts</CardDescription>
+            </div>
+            <Select value={activeFilter} onValueChange={setActiveFilter}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Filter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Activity</SelectItem>
+                <SelectItem value="uploads">Uploads</SelectItem>
+                <SelectItem value="bookings">Bookings</SelectItem>
+                <SelectItem value="alerts">System Alerts</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -295,10 +313,11 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="flex items-start space-x-4"
+                className="flex items-start space-x-4 hover:bg-accent/50 p-3 rounded-lg transition-colors cursor-pointer group"
+                onClick={() => console.log('View details:', activity)}
               >
-                <div className={`p-2 rounded-full bg-primary/10`}>
-                  <activity.icon className={`h-4 w-4 ${activity.color}`} />
+                <div className={`p-2 rounded-full bg-primary/10 group-hover:bg-primary/20`}>
+                  <activity.icon className={`h-5 w-5 ${activity.color}`} />
                 </div>
                 <div className="flex-1 space-y-1">
                   <p className="text-sm font-medium">{activity.title}</p>
@@ -333,6 +352,13 @@ export default function DashboardPage() {
             <Button className="w-full bg-green-500 hover:bg-green-600">
               <Users className="mr-2 h-4 w-4" />
               Manage Users
+            </Button>
+            <Button className="w-full bg-blue-500 hover:bg-blue-600 h-24 flex-col" asChild>
+              <Link href="/admin/dashboard/ai-photo-management">
+                <Sparkles className="mb-2 h-6 w-6" />
+                AI Photo Tools
+                <span className="text-xs font-normal mt-1">Batch editing & tagging</span>
+              </Link>
             </Button>
           </div>
         </CardContent>

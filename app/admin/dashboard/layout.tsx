@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
-import { LayoutDashboard, ImageIcon, FileVideo, Settings, Users, MessageSquare, BarChart, Bell, Sun, Moon, Calendar } from 'lucide-react'
+import { LayoutDashboard, ImageIcon, FileVideo, Settings, Users, User, MessageSquare, BarChart, Bell, Sun, Moon, Calendar } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { 
@@ -37,6 +37,7 @@ export default function DashboardLayout({
     
     // Photography Management
     { icon: ImageIcon, label: 'Photos', href: '/admin/dashboard/photos' },
+    { icon: ImageIcon, label: 'Photo Customization', href: '/admin/dashboard/photo-customization' },
     { icon: ImageIcon, label: 'AI Photo Management', href: '/admin/dashboard/ai-photo-management' },
     { icon: ImageIcon, label: 'Guest Photos', href: '/admin/dashboard/photos/guest-photos' },
     { icon: FileVideo, label: 'Videos', href: '/admin/dashboard/videos' },
@@ -44,6 +45,7 @@ export default function DashboardLayout({
     // Business Management
     { icon: Calendar, label: 'Bookings', href: '/admin/dashboard/bookings' },
     { icon: Users, label: 'Client Management', href: '/admin/dashboard/client-management' },
+    { icon: User, label: 'Customer Details', href: '/admin/dashboard/customer-details' },
     { icon: Users, label: 'Staff', href: '/admin/dashboard/staff' },
     { icon: Settings, label: 'Equipment', href: '/admin/dashboard/equipment-management' },
     { icon: Settings, label: 'Packages', href: '/admin/dashboard/packages' },
