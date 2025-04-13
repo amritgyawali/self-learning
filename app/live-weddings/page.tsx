@@ -76,7 +76,7 @@ export default function LiveWeddingsPage() {
       <div className={`container mx-auto px-4 py-8 ${styles['main-content']}`}>
         {/* Hero Section */}
         <section className="relative h-[50vh] mb-12">
-         <Image src="/images/live-weddings-hero.jpg" alt="Live Weddings" layout="fill" objectFit="cover" className="rounded-xl" />
+         <Image src="/images/live-weddings-hero.jpg" alt="Live Weddings" fill sizes="100vw" className="rounded-xl object-cover" priority />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-xl">
             <div className="text-center">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">Live Weddings</h1>
@@ -116,7 +116,7 @@ export default function LiveWeddingsPage() {
             <h2 className="text-3xl font-bold mb-6">Featured Wedding</h2>
             <Card className="overflow-hidden">
               <div className="relative h-[300px]">
-                <Image src={featuredWedding.photos[0]?.url || "/placeholder-wedding.jpg"} alt={featuredWedding.title} layout="fill" objectFit="cover" />
+                <Image src={featuredWedding.photos[0]?.url || "/placeholder-wedding.jpg"} alt={featuredWedding.title} fill sizes="100vw" className="object-cover" />
               </div>
               <CardContent className="p-6">
                 <h3 className="text-2xl font-bold mb-2">{featuredWedding.title}</h3>
@@ -152,7 +152,7 @@ export default function LiveWeddingsPage() {
               >
                 <Card className="h-full flex flex-col">
                   <div className="relative h-[200px]">
-                    <Image src={wedding.photos[0]?.url || "/placeholder-wedding.jpg"} alt={wedding.title} layout="fill" objectFit="cover" />
+                    <Image src={wedding.photos[0]?.url || "/placeholder-wedding.jpg"} alt={wedding.title} fill sizes="100vw" className="object-cover" />
                   </div>
                   <CardContent className="flex-grow p-6">
                     <CardTitle className="mb-2">{wedding.title}</CardTitle>

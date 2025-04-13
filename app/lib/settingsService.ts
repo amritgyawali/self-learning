@@ -42,15 +42,16 @@ export const getSettings = (): Settings => {
     return initialSettings
   }
   
-  const savedSettings = localStorage.getItem('wedding_photography_settings')
-  
-  if (savedSettings) {
-    try {
-      return JSON.parse(savedSettings)
-    } catch (error) {
-      console.error('Error parsing settings from localStorage:', error)
-      return initialSettings
+  try {
+    const savedSettings = localStorage.getItem('wedding_photography_settings')
+    
+    if (savedSettings) {
+      const parsedSettings = JSON.parse(savedSettings)
+      // Ensure all required fields exist by merging with initialSettings
+      return { ...initialSettings, ...parsedSettings }
     }
+  } catch (error) {
+    console.error('Error retrieving settings from localStorage:', error)
   }
   
   return initialSettings
@@ -61,7 +62,14 @@ export const getSettings = (): Settings => {
  */
 export const saveSettings = (settings: Settings): Settings => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('wedding_photography_settings', JSON.stringify(settings))
+    try {
+      // Ensure all required fields exist by merging with initialSettings
+      const mergedSettings = { ...initialSettings, ...settings }
+      localStorage.setItem('wedding_photography_settings', JSON.stringify(mergedSettings))
+      return mergedSettings
+    } catch (error) {
+      console.error('Error saving settings to localStorage:', error)
+    }
   }
   return settings
 }
@@ -71,7 +79,11 @@ export const saveSettings = (settings: Settings): Settings => {
  */
 export const resetSettingsToDefault = (): Settings => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('wedding_photography_settings', JSON.stringify(initialSettings))
+    try {
+      localStorage.setItem('wedding_photography_settings', JSON.stringify(initialSettings))
+    } catch (error) {
+      console.error('Error resetting settings to default:', error)
+    }
   }
   return initialSettings
 }

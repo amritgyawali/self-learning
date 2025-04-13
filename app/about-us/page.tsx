@@ -2,6 +2,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import Image from 'next/image';
+import DynamicImage from '@/app/components/DynamicImage';
 import {motion} from 'framer-motion';
 
 const AboutUsPage: React.FC = () => {
@@ -12,7 +13,14 @@ const AboutUsPage: React.FC = () => {
         transition={{ duration: 0.5 }}>
         {/* Hero Section */}
         <section className="relative h-[60vh]">
-          <Image src="/images/about-us-hero.jpg" alt="About Us" layout="fill" objectFit="cover" />
+          <DynamicImage
+            page="About Us"
+            section="Hero"
+            fallbackSrc="/images/about-us-hero.jpg"
+            alt="About Us"
+            layout="fill"
+            objectFit="cover"
+          />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <h1 className="text-5xl md:text-7xl font-bold text-white">About Us</h1>
           </div>
@@ -23,7 +31,15 @@ const AboutUsPage: React.FC = () => {
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/2 mb-8 md:mb-0">
-                <Image src="/images/founders-image.jpg" alt="Founders" width={500} height={500} className="rounded-lg" />
+                <DynamicImage
+                  page="About Us"
+                  section="Founders"
+                  fallbackSrc="/images/founders-image.jpg"
+                  alt="Founders"
+                  width={500}
+                  height={500}
+                  className="rounded-lg"
+                />
               </div>
               <div className="md:w-1/2 md:pl-12">
                 <h2 className="text-4xl font-script mb-4">Our Journey</h2>
@@ -78,7 +94,15 @@ const AboutUsPage: React.FC = () => {
             <h2 className="text-4xl font-bold text-center mb-12">Our Photography</h2>
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/2 mb-8 md:mb-0">
-                <Image src="/images/photography.jpg" alt="Photography" width={500} height={500} className="rounded-lg" />
+                <DynamicImage
+                  page="About Us"
+                  section="Photography"
+                  fallbackSrc="/images/photography.jpg"
+                  alt="Photography"
+                  width={500}
+                  height={500}
+                  className="rounded-lg"
+                />
               </div>
               <div className="md:w-1/2 md:pl-12">
                 <p className="mb-6">

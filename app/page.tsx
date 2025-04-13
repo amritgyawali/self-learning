@@ -1,17 +1,14 @@
 'use client'
 
-import React, { useState, useRef, Suspense } from 'react';
+import React from 'react';
 import Image from 'next/image';
+import DynamicImage from './components/DynamicImage';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Environment } from '@react-three/drei';
 import { FaCamera, FaVideo, FaHeart, FaBook, FaPhone } from 'react-icons/fa';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Lightbox from 'yet-another-react-lightbox';
-import 'yet-another-react-lightbox/styles.css';
 import Layout from './components/Layout';
 import { Button } from "@/components/ui/button"
 import ContactForm from './components/ContactForm';
@@ -19,26 +16,23 @@ import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
-// function CameraModel(props) {
-//   const mesh = useRef();
 
-//   useFrame((state, delta) => {
-//     mesh.current.rotation.x += delta * 0.2;
-//     mesh.current.rotation.y += delta * 0.5;
-//   });
 
-//   return (
-//     <mesh {...props} ref={mesh}>
-//       <boxGeometry args={[1, 1, 1]} />
-//       <meshStandardMaterial color="hotpink" />
-//     </mesh>
-//   );
-// }
+interface Testimonial {
+  name: string;
+  image: string;
+  rating: number;
+  text: string;
+}
+
+interface Service {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
 
 const HomePage: React.FC = () => {
   const router = useRouter();
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
   const { scrollYProgress } = useScroll();
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
 
@@ -54,7 +48,7 @@ const HomePage: React.FC = () => {
     '/images/gallery-9.jpg',
   ];
 
-  const testimonials = [
+  const testimonials: Testimonial[] = [
     {
       name: 'John & Jane Doe',
       image: '/images/gallery-2.jpg',
@@ -73,6 +67,13 @@ const HomePage: React.FC = () => {
       rating: 5,
       text: 'Professional, creative, and a joy to work with. Highly recommend their services!',
     },
+  ];
+
+  const services: Service[] = [
+    { icon: FaCamera, title: 'Photography', description: 'Capture your special moments with our professional photography services.' },
+    { icon: FaVideo, title: 'Videography', description: 'Create lasting memories with our cinematic wedding videos.' },
+    { icon: FaHeart, title: 'Pre-Wedding Shoots', description: 'Tell your love story through beautiful pre-wedding photo sessions.' },
+    { icon: FaBook, title: 'Photo Albums', description: 'Preserve your memories in stunning, high-quality photo albums.' },
   ];
 
   return (
@@ -138,21 +139,26 @@ const HomePage: React.FC = () => {
             className="h-full"
           >
             {[
-              '/images/hero-image-1.jpg',
-      '/images/hero-image-2.jpg',
-      '/images/hero-image-3.jpg',
-      '/images/hero-image-4.jpg',
-      '/images/hero-image-5.jpg',
-      '/images/hero-image-6.jpg',
-      '/images/hero-image-7.jpg',
-            ].map((image, index) => (
+              { id: 1, section: 'Hero-Slide-1' },
+              { id: 2, section: 'Hero-Slide-2' },
+              { id: 3, section: 'Hero-Slide-3' },
+              { id: 4, section: 'Hero-Slide-4' },
+              { id: 5, section: 'Hero-Slide-5' },
+              { id: 6, section: 'Hero-Slide-6' },
+              { id: 7, section: 'Hero-Slide-7' },
+            ].map((slide, index) => (
               <div key={index} className="relative h-screen">
-                <Image
-                  src={image}
+                <DynamicImage
+                  page="Home"
+                  section={slide.section}
+                  fallbackSrc={`/images/hero-image-${index + 1}.jpg`}
                   alt={`Hero Slide ${index + 1}`}
-                  layout="fill"
-                  objectFit="cover"
-                  className="absolute"
+                  fill
+                  sizes="100vw"
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  quality={80}
+                  className="absolute object-cover"
                 />
               </div>
             ))}
@@ -168,7 +174,17 @@ const HomePage: React.FC = () => {
                 style={{ scale }}
               >
                 <div className="relative overflow-hidden rounded-lg shadow-lg">
-                 <Image src="/images/featured-image.jpg"  alt="Featured wedding" width={1920} height={1080} className="transition-transform duration-300 hover:scale-110 size-full object-cover" />
+                 <DynamicImage 
+                  page="Home"
+                  section="Featured"
+                  fallbackSrc="/images/featured-image.jpg"  
+                  alt="Featured wedding" 
+                  width={1920} 
+                  height={1080} 
+                  quality={85}
+                  loading="eager"
+                  className="transition-transform duration-300 hover:scale-110 size-full object-cover" 
+                 />
                 </div>
               </motion.div>
               <div className="md:w-1/2 md:pl-12">
@@ -215,26 +231,39 @@ const HomePage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                 >
-                  <Image src={src} alt={`Gallery image ${index + 1}`} width={400} height={300} className="w-full h-auto transition-transform duration-300 group-hover:scale-110" />
+                  <DynamicImage 
+                    page="Home"
+                    section={`Gallery-${index + 1}`}
+                    fallbackSrc={src}
+                    alt={`Gallery image ${index + 1}`} 
+                    width={400} 
+                    height={300} 
+                    loading="lazy"
+                    quality={75}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="w-full h-auto transition-transform duration-300 group-hover:scale-110" 
+                  />
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <Dialog>
                       <DialogTrigger asChild>
-                    <button
-                      onClick={() => {
-                        setPhotoIndex(index);
-                        setIsLightboxOpen(true);
-                      }}
-                      className="text-white text-lg font-semibold hover:underline"
-                    >
-                      View Image
-                    </button>
-                    </DialogTrigger>
-                    <DialogContent className='text-white font-bold  `` p-0 border-none min-w-[60vw] -translate-x-1/2'>
-                      <DialogHeader className='sr-only'>
-                        <DialogTitle>Viewing Gallery Image</DialogTitle>
-                      </DialogHeader>
-                      <Image src={src} alt={`Gallery image ${index + 1}`} width={1920} height={1080}  />
-                    </DialogContent>
+                        <button className="text-white text-lg font-semibold hover:underline">
+                          View Image
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl p-0 border-none">
+                        <DialogHeader className="sr-only">
+                          <DialogTitle>Viewing Gallery Image</DialogTitle>
+                        </DialogHeader>
+                        <Image 
+                          src={src} 
+                          alt={`Gallery image ${index + 1}`} 
+                          width={1920} 
+                          height={1080} 
+                          quality={85}
+                          loading="lazy"
+                          className="w-full h-auto"
+                        />
+                      </DialogContent>
                     </Dialog>
                   </div>
                 </motion.div>
@@ -248,12 +277,7 @@ const HomePage: React.FC = () => {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our Services</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                { icon: FaCamera, title: 'Photography', description: 'Capture your special moments with our professional photography services.' },
-                { icon: FaVideo, title: 'Videography', description: 'Create lasting memories with our cinematic wedding videos.' },
-                { icon: FaHeart, title: 'Pre-Wedding Shoots', description: 'Tell your love story through beautiful pre-wedding photo sessions.' },
-                { icon: FaBook, title: 'Photo Albums', description: 'Preserve your memories in stunning, high-quality photo albums.' },
-              ].map((service, index) => (
+              {services.map((service, index) => (
                 <motion.div 
                   key={index} 
                   className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
@@ -324,7 +348,15 @@ const HomePage: React.FC = () => {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="flex items-center mb-4">
-                      <Image src={testimonial.image} alt={testimonial.name} width={60} height={60} className="rounded-full mr-4" />
+                      <Image 
+                        src={testimonial.image} 
+                        alt={testimonial.name} 
+                        width={60} 
+                        height={60} 
+                        loading="lazy"
+                        quality={70}
+                        className="rounded-full mr-4" 
+                      />
                       <div>
                         <h3 className="font-semibold">{testimonial.name}</h3>
                         <div className="flex text-yellow-400">
@@ -345,16 +377,6 @@ const HomePage: React.FC = () => {
         </section>
 
         <ContactForm />
-        {/* {isLightboxOpen && (
-          <Lightbox
-            mainSrc={images[photoIndex]}
-            nextSrc={images[(photoIndex + 1) % images.length]}
-            prevSrc={images[(photoIndex + images.length - 1) % images.length]}
-            onCloseRequest={() => setIsLightboxOpen(false)}
-            onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)}
-            onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)}
-          />
-        )} */}
       </motion.div>
     </Layout>
   );

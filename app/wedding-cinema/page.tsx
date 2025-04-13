@@ -1,13 +1,21 @@
 import React from 'react';
 import Image from 'next/image';
 import Layout from '../components/Layout';
+import DynamicImage from '@/app/components/DynamicImage';
 
 export default function WeddingCinemaPage() {
   return (
     <Layout>
       {/* Hero Section */}
       <section className="relative h-[60vh]">
-       <Image src="/images/wedding-cinema-hero.jpg" alt="Wedding Cinema" layout="fill" objectFit="cover" />
+       <DynamicImage
+         page="Wedding Cinema"
+         section="Hero"
+         fallbackSrc="/images/wedding-cinema-hero.jpg"
+         alt="Wedding Cinema"
+         layout="fill"
+         objectFit="cover"
+       />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <h1 className="text-5xl md:text-7xl font-bold text-white">Wedding Cinema</h1>
         </div>
@@ -18,7 +26,15 @@ export default function WeddingCinemaPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-8 md:mb-0">
-             <Image src="/images/couple-image.jpg" alt="Happy Couple" width={500} height={500} className="rounded-lg" />
+              <DynamicImage
+                page="Wedding Cinema"
+                section="Introduction"
+                fallbackSrc="/images/couple-image.jpg"
+                alt="Happy Couple"
+                width={500}
+                height={500}
+                className="rounded-lg"
+              />
             </div>
             <div className="md:w-1/2 md:pl-12">
               <h2 className="text-4xl font-script mb-4">Capturing Your Love Story</h2>

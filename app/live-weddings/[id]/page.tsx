@@ -117,7 +117,7 @@ export default function WeddingPage() {
                 <Card>
                   <CardContent className="p-4">
                     <div className="relative h-48">
-                      <Image src={photo.url} alt="Wedding photo" layout="fill" objectFit="cover" className="rounded-md" />
+                      <Image src={photo.url} alt="Wedding photo" fill sizes="(max-width: 768px) 100vw, 33vw" className="rounded-md object-cover" />
                     </div>
                     <p className="text-sm text-gray-500 mt-2">By: {photo.uploadedBy}</p>
                     <p className="text-sm text-gray-500">{new Date(photo.uploadedAt).toLocaleString()}</p>

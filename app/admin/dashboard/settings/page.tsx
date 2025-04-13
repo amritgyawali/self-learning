@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,7 @@ import { getSettings, saveSettings, Settings } from '@/app/lib/settingsService'
 import LoadingOverlay from '@/components/LoadingOverlay'
 
 export default function SettingsPage() {
+  // Initialize with default values to prevent undefined errors
   const [settings, setSettings] = useState<Settings>({
     siteName: 'Wedding Photography',
     siteDescription: 'Capture your special moments with our professional wedding photography services.',
@@ -29,8 +30,8 @@ export default function SettingsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const { toast } = useToast()
 
-  useEffect(() => {
-    // Load settings when component mounts
+  // Use useCallback for functions that are dependencies in useEffect
+  const loadSettings = useCallback(() => {
     setIsLoading(true)
     try {
       const loadedSettings = getSettings()
@@ -46,6 +47,12 @@ export default function SettingsPage() {
       setIsLoading(false)
     }
   }, [toast])
+
+  useEffect(() => {
+    // Load settings when component mounts
+    loadSettings()
+    // No need to include loadSettings in the dependency array as it's wrapped in useCallback
+  }, [loadSettings])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -70,7 +77,7 @@ export default function SettingsPage() {
 
   return (
     <LoadingOverlay isLoading={isLoading} loadingText="Loading settings..." spinnerSize="large">
-      <div className="space-y-6">
+      <div className="space-y-6 pb-4 h-full overflow-auto">
         <h2 className="text-3xl font-bold">Website Settings</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -228,7 +235,7 @@ export default function SettingsPage() {
           </Card>
         </motion.div>
 
-        <Button type="submit">Save Settings</Button>
+        <Button type="submit" className="mb-2">Save Settings</Button>
         </form>
       </div>
     </LoadingOverlay>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import DynamicImage from '@/app/components/DynamicImage';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Layout from '../components/Layout';
@@ -62,7 +63,14 @@ const PortfolioPage: React.FC = () => {
       >
         {/* Hero Section */}
         <section className="relative h-[40vh]">
-         <Image src="/images/portfolio-hero.jpg" alt="Portfolio" layout="fill" objectFit="cover" />
+          <DynamicImage 
+            page="Portfolio"
+            section="Hero"
+            fallbackSrc="/images/portfolio-hero.jpg" 
+            alt="Portfolio" 
+            layout="fill" 
+            objectFit="cover" 
+          />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <h1 className="text-5xl md:text-7xl font-bold text-white">Portfolio</h1>
           </div>
@@ -82,7 +90,15 @@ const PortfolioPage: React.FC = () => {
                   onClick={() => handleItemClick(item)}
                 >
                   {item.type === 'image' ? (
-                    <Image src={item.src} alt={item.title} width={400} height={300} className="w-full h-64 object-cover" />
+                    <DynamicImage
+                      page="Portfolio"
+                      section={`Gallery-${item.id}`}
+                      fallbackSrc={item.src}
+                      alt={item.title}
+                      width={400}
+                      height={300}
+                      className="w-full h-64 object-cover"
+                    />
                   ) : (
                     <video src={item.src} className="w-full h-64 object-cover" />
                   )}
@@ -99,8 +115,10 @@ const PortfolioPage: React.FC = () => {
         <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
           <DialogContent className="max-w-4xl">
             {selectedImage && (
-              <Image
-                src={selectedImage.src}
+              <DynamicImage
+                page="Portfolio"
+                section={`Gallery-${selectedImage.id}`}
+                fallbackSrc={selectedImage.src}
                 alt={selectedImage.title}
                 width={800}
                 height={600}
