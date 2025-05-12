@@ -232,18 +232,64 @@ export default function QuotationGenerator({
     const finalY = (doc as any).lastAutoTable?.finalY || 150;
     const finalTotal = selectedOptions.length > 0 ? calculatedTotal : totalPrice;
     doc.text(`Total Price: Rs.${finalTotal.toLocaleString()}`, pageWidth - 30, finalY + 20, { align: 'right' });
-
-    // Add note about advance payment
+    
+    // Add logo above Authorized Signatory text
+      try {
+        const logoPath = "/images/logo.png";
+        // Calculate signature line width
+        const signatureLineWidth = 50; // Width of the signature line
+        // Calculate logo dimensions to fit the width of the signature line
+        const logoWidth = signatureLineWidth;
+        const logoHeight = logoWidth / 3; // Maintain aspect ratio
+        // Position logo above the signature line
+        const logoX = pageWidth - 30 - (logoWidth / 2); // Center aligned with signature text
+        const logoY = finalY + 15; // Position above signature line
+        
+        // Add logo at 100% opacity
+        doc.addImage(window.location.origin + logoPath, 'PNG', logoX, logoY, logoWidth, logoHeight);
+      } catch (error) {
+        console.error('Error adding signature logo to PDF:', error);
+      }
+      
+      // Add Authorized Signatory text and signature line
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(70, 70, 70);
+      doc.text('Authorised Signatory', pageWidth - 30, finalY + 35, { align: 'center' });
+      
+      // Add a line for signature
+      doc.setDrawColor(150, 150, 150);
+      doc.setLineWidth(0.2);
+      doc.line(pageWidth - 60, finalY + 30, pageWidth - 10, finalY + 30);
+    
+    // Add Terms and Conditions section
+    doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
-    const note = 'Note: A 30% advance payment is required to confirm the booking. The remaining amount should be paid one week before the event.';
-    const splitNote = doc.splitTextToSize(note, pageWidth - 40);
-    doc.text(splitNote, 20, finalY + 40);
-
+    doc.setTextColor(70, 70, 70);
+    doc.text('Terms and Conditions', 20, finalY + 45);
+    
+    // Add terms and conditions points
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(80, 80, 80);
+    
+    const termsStartY = finalY + 55;
+    const termsSpacing = 6;
+    
+    doc.text('1. 20% advance must be paid in advanced to book.', 20, termsStartY);
+    doc.text('2. if out-of-valley then lodging ,fooding and travelling must be cared by customer.', 20, termsStartY + termsSpacing);
+    doc.text('3. 50% amount should be paid before getting photos', 20, termsStartY + (termsSpacing * 2));
+    doc.text('4. full amount should be paid to get all photos and videos', 20, termsStartY + (termsSpacing * 3));
+    doc.text('5. Full Photos edit will complete in 15 days and Video will be completed in 30 days', 20, termsStartY + (termsSpacing * 4));
+    
     // Add contact information
-    doc.setFontSize(10);
-    doc.text('For any inquiries, please contact:', 20, finalY + 60);
-    doc.text('Phone: +977-9867335830', 20, finalY + 70);
-    doc.text('Email: weddingstorynepal1@gmail.com', 20, finalY + 80);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CONTACT US', 20, termsStartY + (termsSpacing * 5) + 10);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.text('Phone: +977-9867335830', 20, termsStartY + (termsSpacing * 5) + 20);
+    doc.text('Email: weddingstorynepal1@gmail.com', 20, termsStartY + (termsSpacing * 5) + 30);
 
     // Save the PDF
     doc.save(`Wedding_Photography_Quotation_${userDetails.name}.pdf`);

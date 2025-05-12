@@ -206,17 +206,63 @@ const UnifiedPackageSelector: React.FC<UnifiedPackageSelectorProps> = ({ userDet
       const finalY = (doc as any).lastAutoTable?.finalY || (startY + 130)
       doc.text(`Total Price: RS.${calculatedTotal.toLocaleString()}`, pageWidth - 30, finalY + 20, { align: 'right' })
       
-      // Add note about advance payment
+      // Add logo above Authorized Signatory text
+      try {
+        const logoPath = "/images/logo.png";
+        // Calculate signature line width
+        const signatureLineWidth = 40; // Reduced width for the signature line logo
+        // Calculate logo dimensions to fit the width of the signature line
+        const logoWidth = signatureLineWidth * 0.8; // Make logo 80% of the signature line width
+        const logoHeight = logoWidth / 3; // Maintain aspect ratio
+        // Position logo above the signature line with more space from total amount
+        const logoX = pageWidth - 30 - (logoWidth / 2); // Center aligned with signature text
+        const logoY = finalY + 22; // Position lower to create more space from total amount
+        
+        // Add logo at 100% opacity
+        doc.addImage(window.location.origin + logoPath, 'PNG', logoX, logoY, logoWidth, logoHeight);
+      } catch (error) {
+        console.error('Error adding signature logo to PDF:', error);
+      }
+      
+      // Add Authorized Signatory text and signature line
+      doc.setFont('helvetica', 'normal')
+      doc.setFontSize(8)
+      doc.setTextColor(70, 70, 70)
+      doc.text('Authorised Signatory', pageWidth - 30, finalY + 42, { align: 'center' })
+      
+      // Add a line for signature
+      doc.setDrawColor(150, 150, 150)
+      doc.setLineWidth(0.2)
+      doc.line(pageWidth - 60, finalY + 37, pageWidth - 10, finalY + 37)
+      
+      // Add Terms and Conditions section
+      doc.setFont('helvetica', 'bold')
       doc.setFontSize(10)
-      const note = 'Note: A 30% advance payment is required to confirm the booking. The remaining amount should be paid one week before the event.'
-      const splitNote = doc.splitTextToSize(note, pageWidth - 40)
-      doc.text(splitNote, 20, finalY + 40)
+      doc.setTextColor(70, 70, 70)
+      doc.text('Terms and Conditions', 20, finalY + 52)
+      
+      // Add terms and conditions points
+      doc.setFont('helvetica', 'normal')
+      doc.setFontSize(8)
+      doc.setTextColor(80, 80, 80)
+      
+      const termsStartY = finalY + 62
+      const termsSpacing = 6
+      
+      doc.text('1. 20% advance must be paid in advanced to book.', 20, termsStartY)
+      doc.text('2. if out-of-valley then lodging ,fooding and travelling must be cared by customer.', 20, termsStartY + termsSpacing)
+      doc.text('3. 50% amount should be paid before getting photos', 20, termsStartY + (termsSpacing * 2))
+      doc.text('4. full amount should be paid to get all photos and videos', 20, termsStartY + (termsSpacing * 3))
+      doc.text('5. Full Photos edit will complete in 15 days and Video will be completed in 30 days', 20, termsStartY + (termsSpacing * 4))
       
       // Add contact information
-      doc.setFontSize(10)
-      doc.text('For any inquiries, please contact:', 20, finalY + 60)
-      doc.text('Phone: +977-9867335830', 20, finalY + 70)
-      doc.text('Email: weddingstorynepal1@gmail.com', 20, finalY + 80)
+      doc.setFontSize(9)
+      doc.setFont('helvetica', 'bold')
+      doc.text('CONTACT US', 20, termsStartY + (termsSpacing * 5) + 10)
+      
+      doc.setFont('helvetica', 'normal')
+      doc.text('Phone: +977-9867335830', 20, termsStartY + (termsSpacing * 5) + 20)
+      doc.text('Email: weddingstorynepal1@gmail.com', 20, termsStartY + (termsSpacing * 5) + 30)
       
       // Save the PDF
       doc.save(`Wedding_Photography_Quotation_${userDetails.name}.pdf`)
